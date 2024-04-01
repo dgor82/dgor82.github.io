@@ -5,7 +5,7 @@ Also check the [detailed guide](https://github.com/dgor82/devtools#continuous-in
 # ToC
 
 - [ToC](#toc)
-- [I) Dev \& Team-Work Methodology](#i-dev--team-work-methodology)
+- [I) Dev \& Team-Work Practices](#i-dev--team-work-practices)
   - [Test-Driven Development (TDD)](#test-driven-development-tdd)
     - [1. Integration Tests](#1-integration-tests)
     - [2. Functional Tests](#2-functional-tests)
@@ -21,7 +21,7 @@ Also check the [detailed guide](https://github.com/dgor82/devtools#continuous-in
   - [Design by Contract](#design-by-contract)
   - [Nullable Reference Types (C# specific)](#nullable-reference-types-c-specific)
 
-# I) Dev & Team-Work Methodology
+# I) Dev & Team-Work Practices
 
 Inspirations/sources:
 - [The Agile Manifesto](https://agilemanifesto.org)
