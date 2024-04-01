@@ -2,6 +2,25 @@ In my .NET / C# projects, I generally follow the set of approaches and paradigms
 
 Also check the [detailed guide](https://github.com/dgor82/devtools#continuous-integration-ci) to my CI Workflow / Setup supported by shell scripts and GitHub Action workflows.
 
+# ToC
+
+- [ToC](#toc)
+- [I) Dev \& Team-Work Methodology](#i-dev--team-work-methodology)
+  - [Test-Driven Development (TDD)](#test-driven-development-tdd)
+    - [1. Integration Tests](#1-integration-tests)
+    - [2. Functional Tests](#2-functional-tests)
+    - [3. Unit Tests](#3-unit-tests)
+    - [4. Acceptance Tests](#4-acceptance-tests)
+    - [5. External Tests](#5-external-tests)
+  - [Vertical Slicing](#vertical-slicing)
+  - [Domain-Driven Design (DDD)](#domain-driven-design-ddd)
+  - [Continuous Refactoring \& Simple Design](#continuous-refactoring--simple-design)
+- [II) Coding Style](#ii-coding-style)
+  - [SOLID Principles](#solid-principles)
+  - [Mixed Paradigm](#mixed-paradigm)
+  - [Design by Contract](#design-by-contract)
+  - [Nullable Reference Types (C# specific)](#nullable-reference-types-c-specific)
+
 # I) Dev & Team-Work Methodology
 
 Inspirations/sources:
@@ -20,31 +39,31 @@ TDD involves writing tests before production code, ensuring every new feature st
 
 However, as usual, pragmatism rules supreme: let us not end up with absurdities like unit tests for simple getters and setters. By default, I am more oriented towards the 'classic school' than the 'mockist school', leading to larger unit tests and soft boundaries between unit-, integration- and functional-tests - with a very selective reliance on mocking. The following sections define my understanding of the different kind of tests involved and the (soft) boundaries between them.
 
-### **1. Integration Tests:** 
+### 1. Integration Tests
 
 Few, end-to-end tests covering the most common use-cases to establish correct interplay of my business logic with its external dependencies like database or external APIs.
 
 They rely on the main code's D.I. container for resolution of all dependencies (with occasional exception, where mocking might facilitate e.g. throwing an exception from an object deep down).   
   
-### **2. Functional Tests:**
+### 2. Functional Tests
 
 The tests can traverse multiple architectural layers and their purpose is to test the end-to-end business logic, covering _all_ of the application's supported use-cases. 
 
 They also rely on the main code’s D.I. container for resolution of internal dependencies and use mocks for external dependencies, frameworks and mechanisms (including the DB) where needed.   
   
-### 3. Unit Tests:
+### 3. Unit Tests
 
 Their purpose is to test and document interesting/critical/error-prone units intensely. Here, thorough analysis of boundary cases etc. comes into play. An example would be the factories and/or constructors for all central Domain POCOs.   
 
 These would NOT rely on the D.I. container, and use a mix of manually resolved real dependencies (for closely related classes) and mocks. 
 
-### **4. Acceptance Tests**
+### 4. Acceptance Tests
 
 These tests will ensure the application meets end-user requirements, simulating real-world usage to validate the complete functionality and integration of all features. Unlike other tests, they run against the full system, including its external dependencies, without mocking. This level of testing aims to detect any issues in the user experience before the software goes live, using high-level scenarios often described in a language understandable by both technical and non-technical stakeholders. 
 
 Using e.g. [SpecFlow](https://specflow.org) to help articulate these tests in .NET
 
-### **5. External Tests**
+### 5. External Tests
 
 These exist in their own dedicated test module which doesn't have any visibility of any of my other modules. These are therefore isolated unit tests to learn/document/assert the behaviour of external libraries and frameworks, which fulfil any of the below criteria: 
 

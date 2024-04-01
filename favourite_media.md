@@ -2,6 +2,21 @@
 title: "My favourite Media"
 ---
 
+# ToC
+- [ToC](#toc)
+- [Books](#books)
+- [Blogs](#blogs)
+    - [General](#general)
+    - [Historic / Curiosities](#historic--curiosities)
+    - [.NET Specific](#net-specific)
+- [Specific Articles](#specific-articles)
+    - [2024](#2024)
+    - [2023](#2023)
+    - [2022 and before](#2022-and-before)
+- [Video](#video)
+- [Other useful References](#other-useful-references)
+- [Fun Stuff](#fun-stuff)
+
 # Books
 See my ['computing-read' shelf](https://www.goodreads.com/review/list/130923884-daniel-gorin?page=1&shelf=computing-read) on goodreads.
 
@@ -64,3 +79,4 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 * [10 Programmer Stereotypes](https://www.youtube.com/watch?v=_k-F-MMvQV4)
 * [Wat](https://www.destroyallsoftware.com/talks/wat)
 * [The International Obfuscated C Code Contest](https://www.ioccc.org)
+
