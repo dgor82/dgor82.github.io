@@ -74,7 +74,7 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 * [Lex Fridman Podcast](https://lexfridman.com/podcast/)
 
 ### All-time Favourite Episodes
-* [Beautiful Code (Greg Wilson)](https://corecursive.com/beautiful-code-with-greg-wilson/)]
+* [Beautiful Code (Greg Wilson)](https://corecursive.com/beautiful-code-with-greg-wilson/)
 * [The Untold Story of SQLite (Richard Hipp)](https://corecursive.com/066-sqlite-with-richard-hipp/)
 * [Design Philosophies that Drive .NET/Azure (John deVadoss)](https://se-radio.net/2023/01/episode-545-john-devadoss-on-design-philosophies-that-drive-net-azure/)
 * [Complexity and the Fabric of Reality (Stephen Wolfram)](https://lexfridman.com/stephen-wolfram-3/)
