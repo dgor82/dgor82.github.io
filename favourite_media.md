@@ -9,10 +9,12 @@ title: "My favourite Media"
     - [General](#general)
     - [Historic / Curiosities](#historic--curiosities)
     - [.NET Specific](#net-specific)
-- [Specific Articles](#specific-articles)
+- [Articles](#articles)
     - [2024](#2024)
     - [2023](#2023)
     - [2022 and before](#2022-and-before)
+- [Podcasts](#podcasts)
+    - [All-time Favourite Episodes](#all-time-favourite-episodes)
 - [Video](#video)
 - [Other useful References](#other-useful-references)
 - [Fun Stuff](#fun-stuff)
@@ -42,7 +44,7 @@ These are the blogs I follow (or in whose archives I like to snoop around)
 * [Fabulous adventures in coding (Eric Lippert)](https://ericlippert.com/)
 * [The Reformed Programmer](https://www.thereformedprogrammer.net)
 
-# Specific Articles
+# Articles
 These articles left a lasting impression. Sorted by when I read/encountered them.
 
 ### 2024
@@ -62,6 +64,23 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 * [Making Wrong Code Look Wrong (Joel Spolsky)](https://www.joelonsoftware.com/2005/05/11/making-wrong-code-look-wrong/)
 * [What to know before debating type systems (Ovid)](https://blogs.perl.org/users/ovid/2010/08/what-to-know-before-debating-type-systems.html)
 * [NeoVictorian Computing (Mark Bernstein)](https://www.markbernstein.org/NeoVictorian.html)
+
+# Podcasts
+* [.NET Rocks](https://www.dotnetrocks.com)
+* [CoRecursive](https://corecursive.com)
+* [RunAsRadio](https://runasradio.com)
+* [IEEE Software Engineering Radio](https://se-radio.net)
+* [This is Product Management](https://tipm.disqo.com)
+* [Lex Fridman Podcast](https://lexfridman.com/podcast/)
+
+### All-time Favourite Episodes
+* [Beautiful Code (Greg Wilson)](https://corecursive.com/beautiful-code-with-greg-wilson/)]
+* [The Untold Story of SQLite (Richard Hipp)](https://corecursive.com/066-sqlite-with-richard-hipp/)
+* [Design Philosophies that Drive .NET/Azure (John deVadoss)](https://se-radio.net/2023/01/episode-545-john-devadoss-on-design-philosophies-that-drive-net-azure/)
+* [Complexity and the Fabric of Reality (Stephen Wolfram)](https://lexfridman.com/stephen-wolfram-3/)
+* [Cyc and the Quest to Solve Common Sense Reasoning in AI (Douglas Lenat)](https://lexfridman.com/douglas-lenat)
+* [Doom, Quake, VR, AGI, Programming, Video Games, and Rockets (John Carmack)](https://lexfridman.com/john-carmack)
+* [Biology, Life, Aliens, Evolution, Embryogenesis & Xenobots (Michael Levin)](https://lexfridman.com/michael-levin)
 
 # Video
 * [Modeling Data Streams Using Sparse Distributed Representations (Numenta)](https://youtu.be/iNMbsvK8Q8Y?si=8e5Scuj9uZcVElhl)
