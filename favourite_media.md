@@ -60,6 +60,7 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 * [Functional Programming in C++ (John Carmack)](http://www.sevangelatos.com/john-carmack-on/)
 
 ### 2022 and before
+* [Mocks Aren't Stubs (Martin Fowler)](https://martinfowler.com/articles/mocksArentStubs.html)
 * [Always Be Coding](https://medium.com/always-be-coding/abc-always-be-coding-d5f8051afce2)
 * [Making Wrong Code Look Wrong (Joel Spolsky)](https://www.joelonsoftware.com/2005/05/11/making-wrong-code-look-wrong/)
 * [What to know before debating type systems (Ovid)](https://blogs.perl.org/users/ovid/2010/08/what-to-know-before-debating-type-systems.html)

@@ -8,7 +8,7 @@ description: 'Logging my Journey to Software Craftsmanship: projects/insights/me
 navigation_links:
   Home: '/'
   My Dev Style Guide: '/dev_style_guide.html'
-  My Tech Advisory Board: '/tech_advisory_board.html'
+  Tech Advisory Board: '/tech_advisory_board.html'
   MeetUps / User Groups: '/meet_ups.html'
   Media Favourites: '/favourite_media.html'
   
