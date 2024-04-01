@@ -61,7 +61,7 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 * [Always Be Coding](https://medium.com/always-be-coding/abc-always-be-coding-d5f8051afce2)
 * [Making Wrong Code Look Wrong (Joel Spolsky)](https://www.joelonsoftware.com/2005/05/11/making-wrong-code-look-wrong/)
 * [What to know before debating type systems (Ovid)](https://blogs.perl.org/users/ovid/2010/08/what-to-know-before-debating-type-systems.html)
-* [NeoVictorian Computing (Mark Bernstein)](http://markbernstein.org/LectureNotes/NeoVictorianComputing.html)
+* [NeoVictorian Computing (Mark Bernstein)](https://www.markbernstein.org/NeoVictorian.html)
 
 # Video
 * [Modeling Data Streams Using Sparse Distributed Representations (Numenta)](https://youtu.be/iNMbsvK8Q8Y?si=8e5Scuj9uZcVElhl)
