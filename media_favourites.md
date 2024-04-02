@@ -1,8 +1,9 @@
----
-title: "My favourite Media"
----
+# Media Favourites
+
+Here you can find a curated list of publications I follow as well as some all-time favourite articles/episodes.
 
 # ToC
+- [Media Favourites](#media-favourites)
 - [ToC](#toc)
 - [Books](#books)
 - [Blogs](#blogs)

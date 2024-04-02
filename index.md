@@ -1,3 +1,7 @@
+# Home
+
+Dear Fellow Tech Enthusiasts,
+
 After almost two decades on the business-side of software start-ups, I have come full circle to 'follow my bliss' and in 2022 reconnected with my teenage passion for hands-on coding.
 
 Main skills & interest lie in business-related backend programming with .NET / C#. This particular niche allows some synergy between my experience in business and my developing hard skills in tech. 
@@ -5,3 +9,6 @@ Main skills & interest lie in business-related backend programming with .NET / C
 I am a signatory of the [Software Craftsmanship Manifesto](http://manifesto.softwarecraftsmanship.org) and a member of the [London Software Craftsmanship Community](https://www.meetup.com/london-software-craftsmanship/) with a particular soft-spot for the [Artisanal Software](https://www.markbernstein.org/NeoVictorian.html) movement.
 
 On this page, I share with you projects/insights/media from my own journey to Software Craftsmanship.
+
+Daniel Gorin  
+Farnham, Surrey in 02/04/2024

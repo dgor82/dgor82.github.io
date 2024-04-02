@@ -1,9 +1,12 @@
+# My Dev Style Guide
+
 In my .NET / C# projects, I generally follow the set of approaches and paradigms described below, to guide the development process towards excellence and a maintainable codebase - thereby attempting to avoid the complexity trap that besets so many software projects.
 
 Also check the [detailed guide](https://github.com/dgor82/devtools#continuous-integration-ci) to my CI Workflow / Setup supported by shell scripts and GitHub Action workflows.
 
 # ToC
 
+- [My Dev Style Guide](#my-dev-style-guide)
 - [ToC](#toc)
 - [I) Dev \& Team-Work Practices](#i-dev--team-work-practices)
   - [Test-Driven Development (TDD)](#test-driven-development-tdd)
