@@ -4,10 +4,10 @@ I believe Mark Bernstein did a good job capturing the spirit of the Artisanal So
 
 The following, beautiful and long-running software projects by independent developers (individuals or small teams) have been particularly inspiring for me as a developer (and, naturally, I am an active user of most):
 
-* [Tinderbox](http://www.eastgate.com/Tinderbox/): Helps you visualize, analyze, and share your ideas
+* [Tinderbox](http://www.eastgate.com/Tinderbox/): Visualize, analyze, and share ideas (with a very active, long-lived user community)
 * [MoneyWorks](http://www.cognito.co.nz): Seriously Good Accounting Software (in development for 30+ years!)
-* [ANKI](https://github.com/ankitects/anki): Powerful, intelligent flash cards
+* [ANKI](https://github.com/ankitects/anki): Powerful, intelligent flash cards (Open Source)
 * [MacFamilyTree](https://www.syniumsoftware.com/macfamilytree): Genealogy for Mac (Apple App of the Year 2022)
-* [Things3](https://culturedcode.com/things/): Beautiful & simple personal task manager
-* [Telegram API](https://core.telegram.org/api)
+* [Things3](https://culturedcode.com/things/): Beautiful & simple personal task manager (in daily use!)
+* [Telegram API](https://core.telegram.org/api): Comprehensive dev ecosystem & supportive community
 

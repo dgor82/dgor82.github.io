@@ -21,7 +21,9 @@ Here you can find a curated list of publications I follow as well as some all-ti
 - [Fun Stuff](#fun-stuff)
 
 # Books
-See my ['computing-read' shelf](https://www.goodreads.com/review/list/130923884-daniel-gorin?page=1&shelf=computing-read) on goodreads.
+See my computing-related shelfs on goodreads.com:
+* [Have-read shelf](https://www.goodreads.com/review/list/130923884-daniel-gorin?page=1&shelf=computing-have-read) 
+* [Want-to-read shelf](https://www.goodreads.com/review/list/130923884-daniel-gorin?ref=nav_mybooks&shelf=computing-to-read)
 
 # Blogs
 These are the blogs I follow (or in whose archives I like to snoop around)
