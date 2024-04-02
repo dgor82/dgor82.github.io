@@ -1,1 +1,1 @@
-Here, a series of posts where I write up / reflect on my talks with my mentors, topic by topic, in blog post format.  As and when I apply it to my current project.
+Here, a series of posts where I write up / reflect on my talks with my mentors, topic by topic, in blog post format.  As and when I apply it to my current project so there is implementation context.
