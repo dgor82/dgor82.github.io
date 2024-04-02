@@ -3,7 +3,7 @@ plugins:
 - jekyll-remote-theme
 
 title: dotnet build -c Craftsmanship
-description: 'Logging my Journey to Software Craftsmanship: projects/insights/media'
+description: 'Logging my Journey to Software Craftsmanship: projects/insights/media/sentiments'
 
 navigation_links:
   Home: '/'
@@ -11,4 +11,5 @@ navigation_links:
   Tech Advisory Board: '/tech_advisory_board.html'
   MeetUps / User Groups: '/meet_ups.html'
   Media Favourites: '/media_favourites.html'
+  Artisanal Inspirations: '/artisanal_inspirational_sw.html'
   
