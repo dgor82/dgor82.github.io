@@ -93,6 +93,7 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 
 # Other useful References
 * [Software Licenses in Plain English](https://www.tldrlegal.com)
+* [Semantic Versioning](https://semver.org)
 * [Project Euler - Coding Challenges](https://projecteuler.net)
 * [Advent of Code](https://adventofcode.com)
 * [UC Berkley Computer Science Lectures (SICP)](https://archive.org/details/ucberkeley-webcast-PL3E89002AA9B9879E?tab=collection)
