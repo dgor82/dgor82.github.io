@@ -104,4 +104,4 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 * [Wat](https://www.destroyallsoftware.com/talks/wat)
 * [The International Obfuscated C Code Contest](https://www.ioccc.org)
 
-Last update: 05/04/2024
+Last update: 05/04/2024 
