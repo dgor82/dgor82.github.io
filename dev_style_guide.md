@@ -98,6 +98,7 @@ Inspirations from
     - [Full Book](https://www.goodreads.com/book/show/18043011-clean-architecture)
 - [The Pragmatic Programmer](https://www.goodreads.com/book/show/4099.The_Pragmatic_Programmer)
 - [Functional Programming in C#](https://www.goodreads.com/book/show/31550964-functional-programming-in-c)
+- [Domain Modeling Made Functional: Tackle Software Complexity with Domain-Driven Design and F#](https://www.goodreads.com/book/show/34921689-domain-modeling-made-functional)
 - [FP vs. OO (by Uncle Bob)](https://blog.cleancoder.com/uncle-bob/2018/04/13/FPvsOO.html)
 - [John Carmack on Functional Programming in C++](http://sevangelatos.com/john-carmack-on/)
 
@@ -113,9 +114,11 @@ Adherence to the SOLID Principles, esp. where OO design is at play.
 
 ## Mixed Paradigm
 
-I follow a mixed paradigm approach to coding, following the mixed-paradigm nature of C# itself. This means blending object-oriented (OO) principles (for system organisation at the larger scale, reliance on Dependency Injection Frameworks etc.) with a functional programming style (FP) (for most of actual code at the smaller scale i.e. avoiding imperative-style coding, mutability and stateful operations whenever feasible). 
+I follow a mixed paradigm approach to coding, following the mixed-paradigm nature of C# itself. This means blending object-oriented (OO) principles for system organisation at the larger scale according to SOLID principles with a functional programming style (FP) for most of the actual implementation at the smaller scale (i.e. avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating the group of classes that require statefulness). 
 
-This approach reduces side effects, making the code more predictable, easier to test and more suitable for concurrency and parallelism. To achieve this it helps to draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#) and, mainly for backend code, depending on circumstances and team skills, consider the cautious introduction of [Language-Ext](https://github.com/louthy/language-ext) (a popular 3rd-party library to move C# even closer to FP, e.g. by allowing monadic composition for elevated types beyond just IEnumerables as natively supported by LINQ).
+This approach reduces side effects, making the code more predictable, easier to test and more suitable for concurrency and parallelism. To achieve this it helps to draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#). Despite my mentra for a single language across the entire system, I'd consider mixing a F# project into the .NET solution for backend code in experimental / pet projects only (unless )circumstances and team skills allow it for a commercial project). After all, it is one of the small luxurires of the .NET ecosystem that C# and F# both run on the Common Language Runtime (CLR) and can easily be mixed in a single solution.
+
+Previously I was considering the cautios introduction of [Language-Ext](https://github.com/louthy/language-ext) into commercial projects. It's a popular 3rd-party library to move C# even closer to FP, e.g. by allowing monadic composition for elevated types beyond just IEnumerables (which C# already supports natively via LINQ) like `Option<>`, `Task<>` or `Either<>`. After further delibaration I have distanced myself from that idea in favour of 'paradigmatic integrity' and the more crystallised approach described above. 
 
 ## Design by Contract
 
