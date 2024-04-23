@@ -8,7 +8,7 @@ Here you can find a curated list of publications I follow as well as some all-ti
 - [Books](#books)
 - [Blogs](#blogs)
     - [General](#general)
-    - [Historic / Curiosities](#historic--curiosities)
+    - [Historic \& Curiosities](#historic--curiosities)
     - [.NET Specific](#net-specific)
 - [Articles](#articles)
     - [2024](#2024)
@@ -18,7 +18,7 @@ Here you can find a curated list of publications I follow as well as some all-ti
     - [All-time Favourite Episodes](#all-time-favourite-episodes)
 - [Video](#video)
 - [Other useful References](#other-useful-references)
-- [Fun Stuff](#fun-stuff)
+- [Fun Stuff \& Folklore](#fun-stuff--folklore)
 
 # Books
 See my computing-related shelfs on goodreads.com:
@@ -36,7 +36,7 @@ These are the blogs I follow (or in whose archives I like to snoop around)
 * [Martin Fowler](https://martinfowler.com)
 * [PragDave](https://pragdave.me/blog/)
 
-### Historic / Curiosities
+### Historic & Curiosities
 * [Habitat Chronicles](http://habitatchronicles.com)
 * [Folklore: The Original Macintosh](https://www.folklore.org/0-index.html)
 * [but she is a girl...](https://www.rousette.org.uk)
@@ -99,7 +99,8 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 * [UC Berkley Computer Science Lectures (SICP)](https://archive.org/details/ucberkeley-webcast-PL3E89002AA9B9879E?tab=collection)
 * [Graphs in Computer Science - Overview](http://web.cecs.pdx.edu/~sheard/course/Cs163/Doc/Graphs.html)
 
-# Fun Stuff
+# Fun Stuff & Folklore
+* [The Story of Mel, a Real Programmer](https://users.cs.utah.edu/~elb/folklore/mel.html)
 * [10 Programmer Stereotypes](https://www.youtube.com/watch?v=_k-F-MMvQV4)
 * [Wat](https://www.destroyallsoftware.com/talks/wat)
 * [The International Obfuscated C Code Contest](https://www.ioccc.org)
