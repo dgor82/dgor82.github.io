@@ -121,11 +121,11 @@ d) In case of conflicts, these need to be resolved manually, followed by a renew
 This process supports a truly _continuous_ integration without delays from waiting for manual PR reviews.
 Full test-coverage / TDD should ensure well-enough that no breaking changes are introduced into main.
 
-Note: `rollForward` property in global.json should be explicitly set to "disable", because any active rollForwarding strategy would mislead the sdk caching procedure in GitHub Actions which rely on a hash of global.json. For a detailed discussion, see the end of: https://chat.openai.com/share/084972a7-e536-4f72-8a30-3c1e1e361481
+Note: `rollForward` property in global.json should be explicitly set to "disable", because any active rollForwarding strategy would mislead the sdk caching procedure in GitHub Actions which rely on a hash of global.json. For a detailed discussion, see the end of [this chat](https://chat.openai.com/share/084972a7-e536-4f72-8a30-3c1e1e361481)
 
 ### Scripts supporting the CI Workflow
 
-The above CI process can be handled manually but certain shell (bash) scripts (for UNIX-based machines), for example, automate many of the manual/repetetive tasks associated with it:
+The above CI process can be handled manually but shell scripts can help automate many of the manual/repetetive tasks associated with it - for example:
 - start_work.sh
 - finish_work.sh
 - clean_up_local_branches.sh
@@ -139,10 +139,10 @@ Do daily dev work on a `tmp/*` branch to allow for regular pushing to GitHub (fo
 When done developing on the current `tmp/*` working branch, run the 'finish_work.sh' script which does this:
 * Updates local tracking branch `origin/main` with any new commits (e.g. those made by other devs) since you branched off from it in step-1.
 * Checks whether your working branch still is a direct ancestor of `origin/main` 
-    * if that's not the case, **rebases** (!) your working branch on the newly updated `main` branch. This essentially rewrites history, pretending that we have made our current local developments on top of the very latest developments of others.
+    * if that's not the case, **rebases** (!) your working branch on the newly updated `main` branch. This essentially rewrites history, pretending that you have made your current local developments on top of the very latest developments of others.
 * Extracts all `Debug_*` configurations from the .sln file in the working directory. 
-    * In case the script was run with option `--noios` ignores release configurations that contain the string 'ios'
-    * In case the script was run with option `--nomob` ignores release configurations that contain either 'ios' or 'android'
+    * In case the script was run with option `--noios`, it ignores release configurations that contain the string 'ios'
+    * In case the script was run with option `--nomob`, it ignores release configurations that contain either 'ios' or 'android'
     * These options were added because mobile builds can be very slow, and if we are sure we don't need to build/test them, this greatly accelerates execution of the script. Use with caution!
 * Restores dependencies, builds solution and runs tests for each of the relevant Debug configurations. This step ensures that everything still builds and passes all tests - and is especially important in case your working branch was rebased on other devs' changes in the previous step. 
 * Shows current (semantic) version and asks you for a new one. Then:
@@ -150,21 +150,23 @@ When done developing on the current `tmp/*` working branch, run the 'finish_work
     * Updates any relevant version tags in .csproj files 
     * Increments by one the `<ApplicationVersion>` tag in any 'android' .csproj - this special version for Google Play needs to be an integer and doesn't follow the semantic versioning pattern.
 * Checks out to a new branch, and asks you for its name, which should represent a meaningful summary of all your commits and will be used as the title for a new PR. 
-    * The script automatically prefixes the branch name with `fb/` which, by convention, is the required pattern to trigger my typical CI workflows in GitHub Actions. 
+    * The script automatically prefixes the branch name with `fb/` which, by my convention, is the required pattern to trigger our CI workflows in GitHub Actions. 
 * Pushes the new branch to `origin` and thus triggers the CI workflow
 
 #### The triggered fb/* Workflow
 GitHub Actions Workflow on the `fb/*` branch is triggered by previous step.
 * Creates a corresponding PR from your feature branch
 * Attempts merging this PR into `main` (using 'squash' to avoid cluttering the commit history of `main` with details!)
-* Deletes the `fb/*` branch again if successful
+* Deletes the remote `fb/*` branch if successful
 * Triggers the CI workflow on the `main` branch
 
 **Note-1:**
 A rare reason for failure could be a merging conflict between the `fb/*` branch and `main`. This should be rare because, if following the finish_work script described above, the latest changes from `origin/main` would have been pulled and rebased locally. Any conflicts should have shown up at that point, for you to resolve locally i.e. before the scripts completes and triggers the CI workflow on GitHub Actions.
 
 **Note-2:**
-No build & test run here yet - this was just run on your local dev machine as part of the Finish Work step, see above. The full build & test cycle will run on the `main` workflow in the next step though for each project marked for deployment. I.e. this avoids a triple running of the cycle, which can be overkill and slow down the CI workflow. The combination of running it twice (once locally before merger, solution-wide, in Debug_* configurations, and once on `main` post merger in Release configuration) should be sufficient for most normal projects.
+No build & test run here yet - this was just run on your local dev machine as part of the Finish Work step, see above. The full build & test cycle will run on the `main` workflow in the next step for each project marked for deployment.
+
+-> This avoids a triple running of the cycle, which can be overkill and slow down the CI workflow. The combination of running it twice (once locally before merger, solution-wide, in Debug_* configurations, and once on `main` post merger in Release configuration) should be sufficient for most small-team projects.
 
 **Note-3:**
 This should also automatically generate a GitHub Project Todo for post-merger review. This can be set up in the 'default workflow' settings in the GitHub Project U.I. found under: https://github.com/orgs/YOUR_ORG/projects/YOUR_PROJECT_ID/workflows
@@ -177,7 +179,9 @@ GitHub Action Workflow on `main` branch is triggered by previous step
 * CD: Deploys any non mobile app code (e.g. cloud-based backend services or browser-based client software etc.).
 
 #### Clean-Up Branches
-After several iterations of the above CI flow, multiple outdated `tmp/*` and `fb/*` branches will have accumulated in the local git repository. The 'clean_up_local_branches.sh' script iterates through all of them and allows you quick & easy force deletion. Normally, there shouldn't be any branches left lingering on origin thanks to the configured auto branch deletion after PR mergers. 
+After several iterations of the above CI flow, multiple outdated `tmp/*` and `fb/*` branches will have accumulated in the local git repository. The 'clean_up_local_branches.sh' script iterates through all of them and allows you quick & easy force deletion. 
+
+On remote/origin, there shouldn't be any `fb/*` branches left thanks to the configured auto branch deletion after PR mergers. There might be old `tmp/*` branches accumulating though from backup pushes during dev work. These should periodically be deleted (manually via GitHub U.I. for now).
 
 # II) Coding Style
 
