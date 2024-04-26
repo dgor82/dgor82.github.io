@@ -114,7 +114,7 @@ Adherence to the SOLID Principles, esp. where OO design is at play.
 
 ## Mixed Paradigm
 
-I follow a mixed paradigm approach to coding, following the mixed-paradigm nature of C# itself. This means blending object-oriented (OO) principles for system organisation at the larger scale according to SOLID principles with a functional programming style (FP) for most of the actual implementation at the smaller scale (i.e. avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating the group of classes that require statefulness). 
+I follow a mixed paradigm approach to coding, following the mixed-paradigm nature of C# itself. This means blending object-oriented (OO) principles for system organisation at the larger scale according to SOLID principles with a functional programming style (FP) for most of the actual code construction at the smaller scale (i.e. avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating the group of classes that require statefulness). 
 
 This approach reduces side effects, making the code more predictable, easier to test and more suitable for concurrency and parallelism. To achieve this it helps to draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#). Despite my mantra for a single language across the entire system, I'd consider mixing a F# project into the .NET solution for backend code in experimental / pet projects only (unless circumstances and team skills allow it for a commercial project). After all, it is one of the small luxurires of the .NET ecosystem that C# and F# both run on the Common Language Runtime (CLR) and can easily be mixed in a single solution.
 
