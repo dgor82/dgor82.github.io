@@ -112,8 +112,8 @@ d) In case of conflicts, these need to be resolved manually, followed by a renew
 
 4. This means, the PRs are merged into main **before** reviews: reviews shall be conducted post-merger and a corresponding GitHub project-task is generated automatically. 
 
-This process supports a truly _continuous_ integration without delays from waiting for manual PR reviews.
-Full test-coverage / TDD should ensure well-enough that no breaking changes are introduced into main.
+This approach to CI supports a truly _continuous_ integration without delays from waiting for manual PR reviews.
+Full test-coverage / TDD should ensure well-enough that no breaking changes are introduced into main. Usually, the entire process would be automated with project-specific shell scripts designed to run on dev's machines.
 
 Note: `rollForward` property in global.json should be explicitly set to "disable", because any active rollForwarding strategy would mislead the sdk caching procedure in GitHub Actions which rely on a hash of global.json. For a detailed discussion, see the end of [this chat](https://chat.openai.com/share/084972a7-e536-4f72-8a30-3c1e1e361481)
 
