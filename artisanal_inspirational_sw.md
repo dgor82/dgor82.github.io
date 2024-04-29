@@ -1,3 +1,5 @@
+Last Update: 29/04/2024
+
 # Artisanal Inspirational Software Projects
 
 I believe Mark Bernstein did a good job capturing the spirit of the Artisanal Software movement in his series of posts on [NeoVictorian Computing](https://www.markbernstein.org/NeoVictorian.html).
@@ -13,4 +15,3 @@ The following, beautiful and long-running software projects by independent devel
 * [The Brain](https://www.thebrain.com): Unique 3D mind-mapping tool, 25+ years in the making
 * [Telegram API](https://core.telegram.org/api): Comprehensive dev ecosystem & supportive community
 * [Tinderbox](http://www.eastgate.com/Tinderbox/): Visualize, analyze, and share ideas (with a very active, long-lived user community)
-

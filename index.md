@@ -11,5 +11,5 @@ I am a signatory of the [Software Craftsmanship Manifesto](http://manifesto.soft
 On this page, I will share with you projects/insights/media/sentiments from my own, ongoing and open-ended journey to Software Craftsmanship. For my full bio/CV, see [LinkedIn](https://www.linkedin.com/in/daniel-gorin-b848172/). 
 
 Daniel Gorin  
-Farnham, Surrey in 02/04/2024
+Farnham, Surrey (U.K.) in 02/04/2024
 

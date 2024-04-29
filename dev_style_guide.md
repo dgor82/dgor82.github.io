@@ -1,3 +1,5 @@
+Last Update: 29/04/2024
+
 # My Dev Style Guide
 
 In my .NET / C# projects, I generally follow the set of approaches and paradigms described below, to guide the development process towards excellence and a maintainable codebase - thereby attempting to avoid the complexity trap that besets so many software projects.

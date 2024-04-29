@@ -1,3 +1,5 @@
+Last Update: 29/04/2024
+
 # Media Favourites
 
 Here you can find a curated list of publications I follow as well as some all-time favourite articles/episodes.
@@ -104,5 +106,3 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 * [10 Programmer Stereotypes](https://www.youtube.com/watch?v=_k-F-MMvQV4)
 * [Wat](https://www.destroyallsoftware.com/talks/wat)
 * [The International Obfuscated C Code Contest](https://www.ioccc.org)
-
-Last update: 05/04/2024 

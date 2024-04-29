@@ -1,3 +1,5 @@
+Last Update: 29/04/2024
+
 # MeetUps & User Groups
 
 I'm member of the following MeetUps / User Groups:
@@ -17,5 +19,3 @@ I'm member of the following MeetUps / User Groups:
 * [London .NET User Group](https://www.meetup.com/london-net-user-group/)
 * [F# Londoners](https://www.meetup.com/FSharpLondon/)
 * [Software Crafters Cambridge](https://www.meetup.com/cambridge-software-crafters/)
-
-Last update: 05/04/2024
