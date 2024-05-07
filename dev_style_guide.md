@@ -74,7 +74,7 @@ For my integration tests, I rely on the main app's D.I. services container for r
 
 The main purpose of these tests is to ensure the application meets end-user requirements, simulating real-world usage to validate the complete functionality and integration of all features. They run against the full system, including its external dependencies, without any mocking. 
 
-While important, these tests have been far fewer (in line with the typical test pyramid) and lower priority for me. In some cases, like projects based on a Telegram.Bot, they have been manual. For future automation, high-level scenarios should be described in a language understandable by both technical and non-technical stakeholders. In my future .NET projects I will consider introducing [SpecFlow](https://specflow.org).
+While important, these tests would be far lower in number (in line with the typical test pyramid) and have been lower priority for me. In some cases, like projects based on a Telegram.Bot, they have been manual. For future automation of acceptance tests for GUI-based apps, high-level scenarios should be described in a language understandable by both technical and non-technical stakeholders - I will consider introducing [SpecFlow](https://specflow.org).
 
 ### 4. External Tests
 
