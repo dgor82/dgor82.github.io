@@ -10,11 +10,10 @@ In my .NET / C# projects, I generally follow the set of approaches and paradigms
 - [ToC](#toc)
 - [I) Dev \& Team-Work Practices](#i-dev--team-work-practices)
   - [Test-Driven Development (TDD)](#test-driven-development-tdd)
-    - [1. Integration Tests](#1-integration-tests)
-    - [2. Functional Tests](#2-functional-tests)
-    - [3. Unit Tests](#3-unit-tests)
-    - [4. Acceptance Tests](#4-acceptance-tests)
-    - [5. External Tests](#5-external-tests)
+    - [1. Unit Tests](#1-unit-tests)
+    - [2. Integration Tests](#2-integration-tests)
+    - [3. Acceptance Tests](#3-acceptance-tests)
+    - [4. External Tests](#4-external-tests)
   - [Vertical Slicing](#vertical-slicing)
   - [Domain-Driven Design (DDD)](#domain-driven-design-ddd)
   - [Continuous Refactoring \& Simple Design](#continuous-refactoring--simple-design)
@@ -41,41 +40,43 @@ Inspirations/sources:
 
 ## Test-Driven Development (TDD)
 
-TDD involves writing tests before production code, ensuring every new feature starts with a failing test. This leads to a test coverage by default, encouraging simpler, more modular code and allowing for easier refactoring and assurance that new changes do not break existing functionality. Experience shows that the initial, additional effort pays off after just a few months, after which the development speed increases dramatically compared to a non-TDD approach. Under TDD, test code is a first-class citizen i.e. the same standards are applied as to the production code. 
-
-However, as usual, pragmatism rules supreme: let us not end up with absurdities like unit tests for simple getters and setters. By default, I am more oriented towards the 'classic school' than the 'mockist school', leading to larger unit tests and soft boundaries between unit-, integration- and functional-tests - with a very selective reliance on mocking. The following sections define my understanding of the different kind of tests involved and the (soft) boundaries between them.
-
-### 1. Integration Tests
-
-Few, end-to-end tests covering the most common use-cases to establish correct interplay of my business logic with its external dependencies like database or external APIs.
-
-They rely on the main code's D.I. container for resolution of all dependencies (with occasional exception, where mocking might facilitate e.g. throwing an exception from an object deep down).   
+My overriding goal is allowing me fearless continuous deployment and fearless continuous refactoring.
   
-### 2. Functional Tests
+To achieve this goal, I follow TDD, which involves writing tests and production code hand-in-hand, ensuring every new feature starts with a failing test. This leads to a test coverage by default, simpler, more modular code and easier refactoring with assurance that new changes do not break existing functionality. 
 
-The tests can traverse multiple architectural layers and their purpose is to test the end-to-end business logic, covering _all_ of the application's supported use-cases. 
+**The test code (a first-class citizen in terms of coding standards) becomes the full specification, executable documentation and a representation of the system's user itself! **
 
-They also rely on the main code’s D.I. container for resolution of internal dependencies and use mocks for external dependencies, frameworks and mechanisms (including the DB) where needed.   
+The following sections describe how I understand and apply the 'test pyramid' - with the different kinds of tests in it, and the (sometimes soft) boundaries between them.
+
+### 1. Unit Tests
+
+I try to decouple unit tests from implementation details: the ideal 'unit' under test thus is NOT a single method/function or even class but rather a cluster of closely interrelated methods (or classes) that, taken together, represent some logical 'chunk' of end-to-end functionality (which from now I'll just refer to as the 'unit'). Hence, I have given up distinguishing between unit-tests and functional tests (doing so drove me to units that are too small).
+
+Any unit will typically be represented by a single test class. The varios test cases in that class aim to thoroughly test all the boundary cases - how thoroughly depends on the unit's complexity and importance. Generally, I aim for full coverage, but pragmatism dictates compromises e.g. in terms of the choice of the method of assessing coverage (xyz vs. xzy with links!)
+
+My unit tests make use of both, mocks (to define the boundaries of the unit) and a modified D.I. services container that, by default, resolves repository dependencies into mocked repositories that don't talk to the database. 
+
+Overall it would seem then, that I intuitively ended up as a follower of the classic rather than the mockist school of thought.
+
+### 2. Integration Tests
+
+Few, end-to-end tests covering the most common use-cases to establish correct interplay of my business logic with its external dependencies like database or external APIs. This is more about data flow and orchestration than about covering a large percentage of logic / code branches / edge cases / exotic flows.
+
+For my integration tests, I rely on the main app's D.I. services container for resolution of all dependencies (with the occasional exception, where a mock might facilitate something like throwing an exception from an object deep down).
   
-### 3. Unit Tests
+### 3. Acceptance Tests
 
-Their purpose is to test and document interesting/critical/error-prone units intensely. Here, thorough analysis of boundary cases etc. comes into play. An example would be the factories and/or constructors for all central Domain POCOs.   
+The main purpose of these tests is to ensure the application meets end-user requirements, simulating real-world usage to validate the complete functionality and integration of all features. They run against the full system, including its external dependencies, without any mocking. 
 
-These would NOT rely on the D.I. container, and use a mix of manually resolved real dependencies (for closely related classes) and mocks. 
+While important, these tests have been far fewer (in line with the typical test pyramid) and lower priority for me. In some cases, like projects based on a Telegram.Bot, they have been manual. For future automation, high-level scenarios should be described in a language understandable by both technical and non-technical stakeholders. In my future .NET projects I will consider introducing [SpecFlow](https://specflow.org).
 
-### 4. Acceptance Tests
+### 4. External Tests
 
-These tests will ensure the application meets end-user requirements, simulating real-world usage to validate the complete functionality and integration of all features. Unlike other tests, they run against the full system, including its external dependencies, without mocking. This level of testing aims to detect any issues in the user experience before the software goes live, using high-level scenarios often described in a language understandable by both technical and non-technical stakeholders. 
+These exist in their own dedicated test module which doesn't have any visibility of any of the actual app. These are therefore isolated unit tests to learn/document/assert the behaviour of external libraries and frameworks, which fulfil any of the below criteria: 
 
-Using e.g. [SpecFlow](https://specflow.org) to help articulate these tests in .NET
-
-### 5. External Tests
-
-These exist in their own dedicated test module which doesn't have any visibility of any of my other modules. These are therefore isolated unit tests to learn/document/assert the behaviour of external libraries and frameworks, which fulfil any of the below criteria: 
-
-- they are not-obvious and so benefit from executable documentation
+- They are not-obvious and so benefit from executable documentation
 - I had to 'learn' to use them (--> learning via unit testing)
-- the library has only medium or even low popularity (thus, asserting its functionality that I rely on across my code is important, in case future updates break it - which is far less likely for mega-popular libraries)
+- The library has only medium or even low popularity (thus, asserting its functionality that I rely on across my code is important, in case future updates break it - which is far less likely for mega-popular libraries)
 
 ## Vertical Slicing
 
