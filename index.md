@@ -4,7 +4,9 @@ Dear Fellow Tech Enthusiasts,
 
 After almost two decades on the business-side of software start-ups, I have come full circle and in 2022 reconnected with my teenage passion for hands-on coding and am now aspiring to become a Software Craftsman.
 
-My currently evolving skills lie in developing business-related systems with .NET / C#, especially to support owner-led SMEs. Focusing on this particular niche allows for some synergy between my small-business background and evolving tech skills. While I have an intense curiosity to eventually learn other languages (Rust, Clojure and F#), the enterprise dev in C# corner currently represents my sweetspot for having fun and achieving regular states of flow!
+My currently evolving skills lie in developing business-related systems with .NET / C#, especially to support owner-led SMEs. Focusing on this particular niche allows for some synergy between my small-business background and evolving tech skills. 
+
+While I have an intense curiosity to eventually learn other languages (Rust, Clojure and F#), the 'C# corner' has proven useful in my current start-up project and allows me to have fun and reliably get into Flow!
 
 I am a signatory of the [Software Craftsmanship Manifesto](http://manifesto.softwarecraftsmanship.org) and a member of the [London Software Craftsmanship Community](https://www.meetup.com/london-software-craftsmanship/) with a particular soft-spot for the Indie and [Artisanal Software](https://www.markbernstein.org/NeoVictorian.html) movements.
 

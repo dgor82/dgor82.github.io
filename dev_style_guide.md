@@ -44,9 +44,7 @@ My overriding goal is fearless continuous deployment and fearless continuous ref
   
 To achieve this goal, I follow TDD, which involves writing tests and production code hand-in-hand, ensuring every new feature starts with a failing test. This leads to test coverage by default, simpler design, and more modular, decoupled code. 
 
-I have discovered that, with true TDD, the test code (a first-class citizen in terms of coding standards)...  
-  
-**...becomes the full specification, executable documentation and even a good representation of the user! **
+I have discovered that, with true TDD, the test code (a first-class citizen in terms of coding standards) becomes the *full* specification, *executable* documentation and even a failry good representation of *the user*!
 
 The following sections describe how I understand and apply the 'test pyramid' - with the different kinds of tests in it, and the (sometimes soft) boundaries between them.
 
