@@ -1,4 +1,4 @@
-Last Update: 07/05/2024
+Last Update: 08/05/2024
 
 # My Dev Style Guide
 
@@ -46,11 +46,11 @@ To achieve this goal, I follow TDD, which involves writing tests and production 
 
 I have discovered that, with true TDD, the test code (a first-class citizen in terms of coding standards) becomes the *full* specification, *executable* documentation and even a failry good representation of *the user*!
 
-The following sections describe how I understand and apply the 'test pyramid' - with the different kinds of tests in it, and the (sometimes soft) boundaries between them.
+The following sections describe how I interpret and apply the 'test pyramid' - with the different kinds of tests in it, and the (sometimes soft) boundaries between them.
 
 ### 1. Unit Tests
 
-I try to decouple unit tests from implementation details: the ideal 'unit' under test thus is NOT a single method/function or even class but rather a cluster of closely interrelated methods (or classes) that, taken together, represent some logical 'chunk' of end-to-end functionality (henceforth just 'unit'). I have given up distinguishing between unit-tests and functional tests (doing so drove me to units that are too small).
+I try to decouple unit tests from implementation details: the ideal 'unit' under test thus is NOT a single method/function but rather a cluster of closely interrelated methods (recursively including all or most internal dependencies) that, taken together, represent some logical 'chunk' of end-to-end functionality (henceforth just 'unit'). I have given up artificially distinguishing between unit-tests and functional tests (doing so drove me to units that are too small).
 
 Any unit will typically be represented by a single test class. The varios test cases in that class aim to thoroughly test all the boundary cases - how thoroughly depends on the unit's complexity and importance. Generally, I aim for full coverage, but pragmatism dictates compromises e.g. in terms of the choice of the code coverage criteria:
 
@@ -60,15 +60,15 @@ Any unit will typically be represented by a single test class. The varios test c
 - path coverage (often impossible due to combinatorial explosion) vs. 
 - [MC/DC](https://en.wikipedia.org/wiki/Modified_condition/decision_coverage) (thorough but doable - the smart/optimised choice)
 
-My unit tests make use of both, mocks (to define the boundaries of the unit) and a modified D.I. services container that, by default, resolves repository dependencies into mocked repositories that don't talk to the database. 
+While the emphasis of my unit tests is on testing interfaces / return values, I feel it is justified to selectively also use verifications of the behaviour of mocks of important external dependencies with visible side effects. In this context, one of my [tech mentors](tech_advisory_board.html), [Paul Butcher](https://www.linkedin.com/in/paulbutcher/), likes to jokingly bring up the  "launching of ICBMs" as an example for a side-effect, for which the verification of behaviour might be worthwhile.
 
-Overall it would seem then, that I intuitively ended up as a follower of the classic rather than the mockist school of thought.
+My unit tests make use of a modified D.I. services container that inherits from the app's main container but replaces external dependencies (e.g. repositories with database access) with their mocks. Overall it would seem then, that I intuitively have subscribed to the classic (rather than mockist) school of thought. I feel this makes my unit tests more realistic and less brittle in the face of continuous refactoring, thus better supporting the two overriding goals stated at the outset. 
 
 ### 2. Integration Tests
 
-Few, end-to-end tests covering the most common use-cases to establish correct interplay of my business logic with its external dependencies like database or external APIs. This is more about data flow and orchestration than about covering a large percentage of logic / code branches / edge cases / exotic flows.
+These are few, end-to-end tests covering the most common use-cases to establish the correct interplay of my business logic with its external dependencies like the database or external APIs. This is more about testing data flow and orchestration than about covering a large percentage of logic / code branches / edge cases / exotic flows.
 
-For my integration tests, I rely on the main app's D.I. services container for resolution of all dependencies (with the occasional exception, where a mock might facilitate something like throwing an exception from an object deep down).
+For my integration tests, I rely on the main app's D.I. services container for resolution of all dependencies.
   
 ### 3. Acceptance Tests
 
