@@ -158,8 +158,15 @@ I use the A.I. plugin of JetBrains Rider to auto-generate my commit messages, wi
 
 > Avoid overly verbose descriptions or unnecessary details.
 Start with a short sentence in imperative form, no more than 50 characters long.
-Then leave an empty line and continue with a more detailed explanation.
-Write only one sentence for the first part, and between one to four bullet-point style entries for the more detailed explanation of the changes (depending on the number of cluster of changes you identified). These should not be complete, grammatically correct sentences! Each bullet point starts with a new line and covers one cluster of changes. Avoid adding bullet points about more obvious changes e.g. the fact that an interface was updated to include newly added functionality that was already covered in another bullet point. Also, do not add unnecessary bullet points to fill gaps or where you try to guess the intention or benefits associated with one cluster of change. Basically, for each cluster just summarise the actual changes to a level of abstraction so that you don't actually need to mention specific names of files / classes / methods that were changed (since I can see that anyway in the actual commit's change history).  
+Then leave an empty line and optionally continue with more details in bullet point form.
+Only add details if the changes made are not very minor or cosmetic e.g. a single rename or clean-up. In that case, no further bullet points / details are needed.
+Just in case details are needed, for more substantial commits, follow these guidelines:
+Add between one and three bullet-point style entries, one for each 'cluster' of change you identified.
+These should not be complete, grammatically correct sentences!
+Each bullet point starts with a new line.
+Avoid adding bullet points about obvious changes e.g. the fact that an interface was updated to include newly added functionality that was already covered in another bullet point.
+Also, do not try to infer the intention behind any changes, or the possible benefits associated with them. 
+For each cluster of change, summarise the actual changes to a level of abstraction so that you don't actually need to mention specific names of files / classes / methods that were changed (since I can see that anyway in the actual commit's change history). 
 
 
 # II) Coding Style
