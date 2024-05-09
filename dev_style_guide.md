@@ -1,4 +1,4 @@
-Last Update: 08/05/2024
+Last Update: 09/05/2024
 
 # My Dev Style Guide
 
@@ -20,6 +20,7 @@ In my .NET / C# projects, I generally follow the set of approaches and paradigms
   - [Continuous Refactoring \& Simple Design](#continuous-refactoring--simple-design)
   - [Continuous Integration (CI)](#continuous-integration-ci)
     - [CI Workflow Summary](#ci-workflow-summary)
+  - [Commit Messages](#commit-messages)
 - [II) Coding Style](#ii-coding-style)
   - [SOLID Principles](#solid-principles)
   - [Mixed Paradigm](#mixed-paradigm)
@@ -45,7 +46,7 @@ My overriding goal is fearless continuous deployment and fearless continuous ref
   
 To achieve this goal, I follow TDD, which involves writing tests and production code hand-in-hand, ensuring every new feature starts with a failing test. This leads to test coverage by default, simpler design, and more modular, decoupled code. 
 
-I have discovered that, with true TDD, the test code (a first-class citizen in terms of coding standards) becomes the *full* specification, *executable* documentation and even a failry good representation of *the user*!
+I have discovered that, with true TDD, the test code (a first-class citizen in terms of coding standards) becomes the *full* specification, *executable* documentation and even a fairly good representation of *the user*!
 
 The following sections describe how I interpret and apply the 'test pyramid' - with the different kinds of tests in it, and the (sometimes soft) boundaries between them. I end with a few words on why I don't use test coverage tools.
 
@@ -53,11 +54,11 @@ The following sections describe how I interpret and apply the 'test pyramid' - w
 
 I try to decouple unit tests from implementation details: the ideal 'unit' under test thus is NOT a single method/function but rather a cluster of closely interrelated methods (recursively including all or most internal dependencies) that, taken together, represent some logical 'chunk' of end-to-end functionality (henceforth just 'unit'). I have given up artificially distinguishing between unit-tests and functional tests (doing so drove me to units that are too small).
 
-Any unit will typically be represented by a single test class. The varios test cases in that class aim to thoroughly test all the boundary cases - how thoroughly depends on the unit's complexity and importance. The various forms of code coverage criteria can be sources of inspiration/ideas:
+Any unit will typically be represented by a single test class. The various test cases in that class aim to thoroughly test all the boundary cases - how thoroughly depends on the unit's complexity and importance. The various forms of code coverage criteria can be sources of inspiration/ideas:
 
 - line/statement coverage vs.
 - branch coverage vs.
-- conditon + branch coverage (a good default?) vs.
+- condition + branch coverage (a good default?) vs.
 - path coverage (beware of the combinatorial explosion!) vs. 
 - [MC/DC](https://en.wikipedia.org/wiki/Modified_condition/decision_coverage) (thorough but doable - the smart/optimised choice for high-stakes / mission-critical code)
 
@@ -87,16 +88,26 @@ These exist in their own dedicated test module which doesn't have any visibility
 
 ### Why no test-coverage tools?
 
-On a greenfield project, where the developer(s) are 'test-infected' (i.e. follow TDD / think 'test first') they don't add much value but they do create considerable overhead and distraction.
+Especially on a greenfield project, where the developer(s) are 'test-infected' (think 'test first', follow TDD...) they don't add much value but they do create considerable overhead and distraction.
   
-100%: a meaningless statistic!
+The crux is that '100%' test coverage is a totally meaningless measurement target!
 
-- When stickign to a coarse measurement like 'statement coverage', then '100%' is easy to attain but doesn't lead to sufficient coverage of branches / conditions / decisions! This is the case, for instance, with Jetbrains dotCover (I use Rider).   
-- When using real coverage (i.e. path-coverage), 100% is unattainable anyway due to the combinatorial explosion (for any code with a fair amount of complexity). 
+1) When sticking to a coarse measurement like 'statement coverage', then the '100%' is easy to attain but doesn't actually lead to sufficient coverage of branches / conditions / decisions! This is the case, for instance, with JetBrain's dotCover.   
+  
+Consider this C# statement:
+```
+var userId = telegramInputMessage.From?.Id 
+              ?? throw new ArgumentNullException(nameof(telegramInputMessage),
+                  "From.Id in the input message must not be null");        
+```
 
-One thus ends up obsessing about and fidelling with:
+A happy-path test that never touches the `throw` branch of this statement still causes dotCover to report a 100% coverage. This is misleading and perversely incentivises use of a less terse `if` statement syntax (which works as expected). Tail wagging the dog!
+
+2) When using real coverage (i.e. path-coverage), 100% is unattainable anyway due to the combinatorial explosion (for any code with a fair amount of complexity). 
+
+3) One thus ends up obsessing about and fiddling with:
 - code coverage methodologies
-- coverage statistics (invariably aiming for the meaingless 100% for lack of any other sensible target)
+- coverage statistics (invariably aiming for the meaningless 100% for lack of any other sensible target)
 - coverage filter settings
 - etc.
   
@@ -141,6 +152,16 @@ d) In case of conflicts, these need to be resolved manually, followed by a renew
 This approach to CI supports a truly _continuous_ integration without delays from waiting for manual PR reviews.
 Full test-coverage / TDD should ensure well-enough that no breaking changes are introduced into main. Usually, the entire workflow should be automated with project-specific shell scripts designed to run on dev's machines.
 
+## Commit Messages
+
+I use the A.I. plugin of JetBrains Rider to auto-generate my commit messages, with the following default prompt (in the A.I. Plugin's settings) having proven to generate accurate and useful summaries on the right level of detail. Feel free to copy and modify to your delight!
+
+> Avoid overly verbose descriptions or unnecessary details.
+Start with a short sentence in imperative form, no more than 50 characters long.
+Then leave an empty line and continue with a more detailed explanation.
+Write only one sentence for the first part, and three to four bullet-point style entries for the more detailed explanation of the changes. These should not be complete, grammatically correct sentences! Each bullet point starts with a new line and covers one cluster of changes. Avoid adding bullet points about more obvious changes e.g. the fact that an interface was updated to include newly added functionality that was already covered in another bullet point. Basically, summarise the changes for each bullet point to a level of abstraction so that you don't actually need to mention specific names of files / classes / methods that were changed (since I can see that anyway in the actual commit's change history). 
+
+
 # II) Coding Style
 
 Inspirations from
@@ -168,9 +189,9 @@ Adherence to the SOLID Principles, esp. where OO design is at play.
 
 I follow a mixed paradigm approach to coding, following the mixed-paradigm nature of C# itself. This means blending object-oriented (OO) principles for system organisation at the larger scale according to SOLID principles with a functional programming style (FP) for most of the actual code construction at the smaller scale (i.e. avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating the group of classes that require statefulness). 
 
-This approach reduces side effects, making the code more predictable, easier to test and more suitable for concurrency and parallelism. To achieve this it helps to draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#). Despite my mantra for a single language across the entire system, I'd consider mixing a F# project into the .NET solution for backend code in experimental / pet projects only (unless circumstances and team skills allow it for a commercial project). After all, it is one of the small luxurires of the .NET ecosystem that C# and F# both run on the Common Language Runtime (CLR) and can easily be mixed in a single solution.
+This approach reduces side effects, making the code more predictable, easier to test and more suitable for concurrency and parallelism. To achieve this it helps to draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#). Despite my mantra for a single language across the entire system, I'd consider mixing a F# project into the .NET solution for backend code in experimental / pet projects only (unless circumstances and team skills allow it for a commercial project). After all, it is one of the small luxuries of the .NET ecosystem that C# and F# both run on the Common Language Runtime (CLR) and can easily be mixed in a single solution.
 
-Previously I was considering the cautios introduction of [Language-Ext](https://github.com/louthy/language-ext) into commercial projects. It's a popular 3rd-party library to move C# even closer to FP, e.g. by allowing monadic composition for elevated types beyond just IEnumerables (which C# already supports natively via LINQ) like `Option<>`, `Task<>` or `Either<>`. After further delibaration I have distanced myself from that idea in favour of 'paradigmatic integrity' and the more crystallised approach described above. 
+Previously I was considering the cautious introduction of [Language-Ext](https://github.com/louthy/language-ext) into commercial projects. It's a popular 3rd-party library to move C# even closer to FP, e.g. by allowing monadic composition for elevated types beyond just IEnumerables (which C# already supports natively via LINQ) like `Option<>`, `Task<>` or `Either<>`. After further deliberation I have distanced myself from that idea in favour of 'paradigmatic integrity' and the more crystallised approach described above. 
 
 ## Design by Contract
 

@@ -23,7 +23,7 @@ Here you can find a curated list of publications I follow as well as some all-ti
 - [Fun Stuff \& Folklore](#fun-stuff--folklore)
 
 # Books
-See my computing-related shelfs on goodreads.com:
+See my computing-related shelves on goodreads.com:
 * [Have-read shelf](https://www.goodreads.com/review/list/130923884-daniel-gorin?page=1&shelf=computing-have-read) 
 * [Want-to-read shelf](https://www.goodreads.com/review/list/130923884-daniel-gorin?ref=nav_mybooks&shelf=computing-to-read)
 

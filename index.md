@@ -12,7 +12,7 @@ I am a signatory of the [Software Craftsmanship Manifesto](http://manifesto.soft
 
 On this page, I will share with you projects/insights/media/sentiments from my own, ongoing and open-ended journey to Software Craftsmanship. For my full bio/CV, see [LinkedIn](https://www.linkedin.com/in/daniel-gorin-b848172/). 
 
-Last but not least, gratitude: aren't we lucky to live in an era where one can make a living by reconnecting with the inner child - with programming the closest thing to 'Lego for Aduts'?
+Last but not least, gratitude: aren't we lucky to live in an era where one can make a living by reconnecting with the inner child - with programming the closest thing to 'Lego for Adults'?
 
 Daniel Gorin  
 Farnham, Surrey (U.K.) in 07/05/2024
