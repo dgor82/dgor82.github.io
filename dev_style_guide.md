@@ -14,6 +14,7 @@ In my .NET / C# projects, I generally follow the set of approaches and paradigms
     - [2. Integration Tests](#2-integration-tests)
     - [3. Acceptance Tests](#3-acceptance-tests)
     - [4. External Tests](#4-external-tests)
+    - [Why no test-coverage tools?](#why-no-test-coverage-tools)
   - [Vertical Slicing](#vertical-slicing)
   - [Domain-Driven Design (DDD)](#domain-driven-design-ddd)
   - [Continuous Refactoring \& Simple Design](#continuous-refactoring--simple-design)
@@ -46,19 +47,19 @@ To achieve this goal, I follow TDD, which involves writing tests and production 
 
 I have discovered that, with true TDD, the test code (a first-class citizen in terms of coding standards) becomes the *full* specification, *executable* documentation and even a failry good representation of *the user*!
 
-The following sections describe how I interpret and apply the 'test pyramid' - with the different kinds of tests in it, and the (sometimes soft) boundaries between them.
+The following sections describe how I interpret and apply the 'test pyramid' - with the different kinds of tests in it, and the (sometimes soft) boundaries between them. I end with a few words on why I don't use test coverage tools.
 
 ### 1. Unit Tests
 
 I try to decouple unit tests from implementation details: the ideal 'unit' under test thus is NOT a single method/function but rather a cluster of closely interrelated methods (recursively including all or most internal dependencies) that, taken together, represent some logical 'chunk' of end-to-end functionality (henceforth just 'unit'). I have given up artificially distinguishing between unit-tests and functional tests (doing so drove me to units that are too small).
 
-Any unit will typically be represented by a single test class. The varios test cases in that class aim to thoroughly test all the boundary cases - how thoroughly depends on the unit's complexity and importance. Generally, I aim for full coverage, but pragmatism dictates compromises e.g. in terms of the choice of the code coverage criteria:
+Any unit will typically be represented by a single test class. The varios test cases in that class aim to thoroughly test all the boundary cases - how thoroughly depends on the unit's complexity and importance. The various forms of code coverage criteria can be sources of inspiration/ideas:
 
-- line coverage (usually too shallow) vs.
+- line/statement coverage vs.
 - branch coverage vs.
-- conditon + branch coverage (a good default) vs.
-- path coverage (often impossible due to combinatorial explosion) vs. 
-- [MC/DC](https://en.wikipedia.org/wiki/Modified_condition/decision_coverage) (thorough but doable - the smart/optimised choice)
+- conditon + branch coverage (a good default?) vs.
+- path coverage (beware of the combinatorial explosion!) vs. 
+- [MC/DC](https://en.wikipedia.org/wiki/Modified_condition/decision_coverage) (thorough but doable - the smart/optimised choice for high-stakes / mission-critical code)
 
 While the emphasis of my unit tests is on testing interfaces / return values, I feel it is justified to selectively also use verifications of the behaviour of mocks of important external dependencies with visible side effects. In this context, one of my [tech mentors](tech_advisory_board.html), [Paul Butcher](https://www.linkedin.com/in/paulbutcher/), likes to jokingly bring up the  "launching of ICBMs" as an example for a side-effect, for which the verification of behaviour might be worthwhile.
 
@@ -83,6 +84,24 @@ These exist in their own dedicated test module which doesn't have any visibility
 - They are not-obvious and so benefit from executable documentation
 - I had to 'learn' to use them (--> learning via unit testing)
 - The library has only medium or even low popularity (thus, asserting its functionality that I rely on across my code is important, in case future updates break it - which is far less likely for mega-popular libraries)
+
+### Why no test-coverage tools?
+
+On a greenfield project, where the developer(s) are 'test-infected' (i.e. follow TDD / think 'test first') they don't add much value but they do create considerable overhead and distraction.
+  
+100%: a meaningless statistic!
+
+- When stickign to a coarse measurement like 'statement coverage', then '100%' is easy to attain but doesn't lead to sufficient coverage of branches / conditions / decisions! This is the case, for instance, with Jetbrains dotCover (I use Rider).   
+- When using real coverage (i.e. path-coverage), 100% is unattainable anyway due to the combinatorial explosion (for any code with a fair amount of complexity). 
+
+One thus ends up obsessing about and fidelling with:
+- code coverage methodologies
+- coverage statistics (invariably aiming for the meaingless 100% for lack of any other sensible target)
+- coverage filter settings
+- etc.
+  
+... time and attention that would be better spent thinking deeply about important boundary cases!
+
 
 ## Vertical Slicing
 
