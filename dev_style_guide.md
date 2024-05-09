@@ -152,6 +152,8 @@ d) In case of conflicts, these need to be resolved manually, followed by a renew
 This approach to CI supports a truly _continuous_ integration without delays from waiting for manual PR reviews.
 Full test-coverage / TDD should ensure well-enough that no breaking changes are introduced into main. Usually, the entire workflow should be automated with project-specific shell scripts designed to run on dev's machines.
 
+I have created this [Custom GPT](https://chatgpt.com/g/g-0KRoUTOLM-generate-short-pr-feature-branch-title) to generate meaningful names for feature branches / PR titles to support the above workflow.
+
 ## Commit Messages
 
 I use the A.I. plugin of JetBrains Rider to auto-generate my commit messages, with the following default prompt (in the A.I. Plugin's settings) having proven to generate accurate and useful summaries on the right level of detail. Feel free to copy and modify to your delight!
