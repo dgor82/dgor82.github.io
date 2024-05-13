@@ -123,7 +123,7 @@ By adopting Vertical Slicing, I ensure any development efforts are focused on de
 
 DDD emphasises a deep understanding of the domain to inform our software design. The central concept here is developing a 'ubiquitous language' which domain experts and coders share. This language is reflected in the naming and choice of abstractions in the code, making it partially comprehensible to non-technical stakeholders (eventually with a goal of moving towards an internal Domain-Specific Language (DSL)). DDD ensures our code stays closely aligned with business needs and the real-world subtleties of the domain. It also facilitates a common language and thus clearer communication across all stakeholders. 
 
-This also implies that the code is the documentation. I'm strictly against extensive technical documentation outside of the code-base (except for high-level requirements or architectural considerations) or extensive explanatory comments inside the code-base. Such comments, in most cases, just mask bad naming and/or badly designed code. 
+This also implies that the code base becomes the best kind of project documentation (only devOps & high-level architecture may require  documentation separate from code). I totally avoid explanatory comments inside the code-base except for cases where non-obvious or unusual externalities are involved (e.g. config-related code). In most cases when I catch myself feeling the need to add a comment, it turns out there was an underlying naming or design issue. 
 
 ## Continuous Refactoring & Simple Design
 
