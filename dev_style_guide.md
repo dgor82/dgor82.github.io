@@ -1,4 +1,4 @@
-Last Update: 09/05/2024
+Last Update: 14/05/2024
 
 # My Dev Style Guide
 
@@ -25,7 +25,10 @@ In my .NET / C# projects, I generally follow the set of approaches and paradigms
   - [SOLID Principles](#solid-principles)
   - [Mixed Paradigm](#mixed-paradigm)
   - [Design by Contract](#design-by-contract)
-  - [Nullable Reference Types (C# specific)](#nullable-reference-types-c-specific)
+  - [Use of Monadic Wrappers](#use-of-monadic-wrappers)
+    - [Option vs. Nullable Reference Types (C# specific)](#option-vs-nullable-reference-types-c-specific)
+    - [Others](#others)
+    - [Monadic Composition](#monadic-composition)
 
 # I) Dev & Team-Work Practices
 
@@ -206,12 +209,73 @@ Previously I was considering the cautious introduction of [Language-Ext](https:/
 
 DbC, inspired by Bertrand Meyer, the inventor of the Eiffel language, ensures that software components interact based on clearly defined specifications. This formal agreement on expected inputs, outputs, and side effects between components leads to more reliable and robust system behaviour, facilitating easier debugging and validation of software correctness. This complements the TDD approach described further above. I believe in a pragmatic application of DbC by limiting its use to the outer edges of each component, i.e. where it interfaces with other components or third-party libraries. 
 
-## Nullable Reference Types (C# specific)
+## Use of Monadic Wrappers 
+
+### Option<T> vs. Nullable Reference Types (C# specific)
 
 `From [8SPHE]`
 
-Rely on consistent and disciplined usage of NRTs (nullable reference types) and the default of enabled Nullability, instead of on FP's custom `Option<T>` type - with the same goal of keeping functions honest and my code free of clutter. 
+I apply three simple rules:
+  
+1. Enable nullable types consistently via `<Nullable>enable</Nullable>` in Directory.Build.props saved in solution root.
+2. Never actually make any types under my control nullable.
+3. Instead, use `Option<T>` for any optional T
+  
+Here a simple but working implementation:
 
-Augment the compiler's ability to do advanced static analysis of null-states via [# Attributes for null-state static analysis](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/attributes/nullable-analysis?source=docs&ns-enrollment-type=Collection&ns-enrollment-id=bookmarks)
+```
+public record Option<T>
+{
+    private readonly T? _value;
+    private readonly bool _hasValue;
 
-Over time, possibly as part of gradual refactoring towards deeper use of FP, e.g. with Language-Ext and esp. in backend code, explore introducing Option<> after all in certain vertical slices...
+    private Option(T value)
+    {
+        _value = value;
+        _hasValue = true;
+    }
+
+    private Option()
+    {
+        _value = default;
+        _hasValue = false;
+    }
+
+    // Implicit conversion from T to Option<T>
+    public static implicit operator Option<T>(T value) => Some(value);
+    
+    public static Option<T> Some(T value) => new Option<T>(value);
+    public static Option<T> None() => new Option<T>();
+
+    public bool IsSome => _hasValue;
+    public bool IsNone => !_hasValue;
+
+    public TResult Match<TResult>(Func<T, TResult> onSome, Func<TResult> onNone)
+    {
+        return _hasValue ? onSome(_value!) : onNone();
+    }
+
+    public T GetValueOrDefault(T defaultValue = default!)
+    {
+        return _hasValue ? _value! : defaultValue;
+    }
+
+    public Option<TResult> SelectMany<TResult>(Func<T, Option<TResult>> binder)
+    {
+        return _hasValue ? binder(_value!) : Option<TResult>.None();
+    }
+}
+```
+
+### Others
+
+In my default setup, I also have
+
+- `Result<T>` to encapsulate the return value of an operation that might either succeed or result in an error message.
+- `Try<T>` to encapsulate an operation that might throw an exception.
+- `Validate<T>` to encapsulate a collection of validation results/errors (e.g. for user input)
+
+  
+### Monadic Composition
+
+Combined with .NET's `Task<T>` and `IEnumerable<T>`, these elevated types lend themselves for beautiful monadic compositions with the LINQ comprehension/query syntax. Monadic wrappers thus allow me to build workflows that are more declarative, expressive, concise and fault-tolerant compared to traditional, imperative style coding!
