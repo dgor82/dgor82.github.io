@@ -26,7 +26,7 @@ In my .NET / C# projects, I generally follow the set of approaches and paradigms
   - [Mixed Paradigm](#mixed-paradigm)
   - [Design by Contract](#design-by-contract)
   - [Use of Monadic Wrappers](#use-of-monadic-wrappers)
-    - [Option vs. Nullable Reference Types (C# specific)](#option-vs-nullable-reference-types-c-specific)
+    - [`Option<T>` vs. Nullable Reference Types (C# specific)](#optiont-vs-nullable-reference-types-c-specific)
     - [Others](#others)
     - [Monadic Composition](#monadic-composition)
 
@@ -211,14 +211,14 @@ DbC, inspired by Bertrand Meyer, the inventor of the Eiffel language, ensures th
 
 ## Use of Monadic Wrappers 
 
-### Option<T> vs. Nullable Reference Types (C# specific)
+### `Option<T>` vs. Nullable Reference Types (C# specific)
 
 `From [8SPHE]`
 
 I apply three simple rules:
   
 1. Enable nullable types consistently via `<Nullable>enable</Nullable>` in Directory.Build.props saved in solution root.
-2. Never actually make any types under my control nullable.
+2. Never actually make any types under my control nullable (with the exception of using them for the fields in my monadic wrappers).
 3. Instead, use `Option<T>` for any optional T
   
 Here a simple but working implementation:
@@ -279,7 +279,7 @@ In my default setup, I also have
 static async Task<Attempt<string>> SafelyProcessInputRequestAsync(string input) {...}
 ```
   
-- `Validate<T>` to encapsulate a collection of validation results/errors (e.g. for user input)
+- `Validate<T>` to encapsulate a collection of validation results/errors (e.g. to show a user everything that was wrong with their input)
 
   
 ### Monadic Composition
