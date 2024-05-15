@@ -272,7 +272,7 @@ public record Option<T>
 In my default setup, I also have
 
 - `Result<T>` to encapsulate the return value of an operation that might either succeed or result in an error message.
-- `Try<T>` to encapsulate an operation that might throw an exception.
+- `Attempt<T>` to encapsulate an operation that might throw an exception. I steer clear of the name `Try<T>` (more idiomatic in the functional world) due to its clash with the idiomatic use of the 'Try' prefix in C# (returning a bool and writing the result into an out variable). Per my convention, a function that returns an `Attempt<T>` shall have the 'Safely' prefix in its name. 
 - `Validate<T>` to encapsulate a collection of validation results/errors (e.g. for user input)
 
   
