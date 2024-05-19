@@ -233,7 +233,7 @@ In my default setup, I also have
 static async Task<Attempt<string>> SafelyProcessInputRequestAsync(string input) {...}
 ```
   
-- `Validate<T>` to encapsulate a collection of validation results/errors (e.g. to show a user everything that was wrong with their input)
+- `Validation<T>` to encapsulate a collection of validation results/errors (e.g. to show a user everything that was wrong with their input)
 
   
 ### Monadic Composition
