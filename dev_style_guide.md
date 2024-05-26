@@ -1,4 +1,4 @@
-Last Update: 14/05/2024
+Last Update: 26/05/2024
 
 # My Dev Style Guide
 
@@ -23,13 +23,13 @@ In my .NET / C# projects, I generally follow the set of approaches and paradigms
   - [Commit Messages](#commit-messages)
 - [II) Coding Style](#ii-coding-style)
   - [SOLID Principles](#solid-principles)
-  - [Mixed Paradigm](#mixed-paradigm)
   - [Design by Contract](#design-by-contract)
-  - [Use of Monadic Wrappers](#use-of-monadic-wrappers)
-    - [`Option<T>` vs. Nullable Reference Types (C# specific)](#optiont-vs-nullable-reference-types-c-specific)
-    - [`Attempt<T>` for Failing Operations](#attemptt-for-failing-operations)
-    - [`Validation<T>` for Validation Error Collections](#validationt-for-validation-error-collections)
-    - [Monadic Composition](#monadic-composition)
+  - [Mixed Paradigm (OO ∩ FP)](#mixed-paradigm-oo--fp)
+    - [Use of Monadic Wrappers](#use-of-monadic-wrappers)
+      - [1) Instead of Nullable Reference Types: `Option<T>`](#1-instead-of-nullable-reference-types-optiont)
+      - [2) For Failing Operations: `Attempt<T>`](#2-for-failing-operations-attemptt)
+      - [3) For Validation Error Collections: `Validation<T>`](#3-for-validation-error-collections-validationt)
+      - [Monadic Composition](#monadic-composition)
 
 # I) Dev & Team-Work Practices
 
@@ -187,6 +187,7 @@ Inspirations from
 - [Domain Modeling Made Functional: Tackle Software Complexity with Domain-Driven Design and F#](https://www.goodreads.com/book/show/34921689-domain-modeling-made-functional)
 - [FP vs. OO (by Uncle Bob)](https://blog.cleancoder.com/uncle-bob/2018/04/13/FPvsOO.html)
 - [John Carmack on Functional Programming in C++](http://sevangelatos.com/john-carmack-on/)
+- [Railway Oriented Programming (by Scott Wlaschin)](https://fsharpforfunandprofit.com/rop/)
 
 ## SOLID Principles
 
@@ -198,21 +199,26 @@ Adherence to the SOLID Principles, esp. where OO design is at play.
 - I = Interface Segregation Principle
 - D = Dependency Inversion Principle
 
-## Mixed Paradigm
-
-I follow a mixed paradigm approach to coding, following the mixed-paradigm nature of C# itself. This means blending object-oriented (OO) principles for system organisation at the larger scale according to SOLID principles with a functional programming style (FP) for most of the actual code construction at the smaller scale (i.e. avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating the group of classes that require statefulness). 
-
-This approach reduces side effects, making the code more predictable, easier to test and more suitable for concurrency and parallelism. To achieve this it helps to draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#). Despite my mantra for a single language across the entire system, I'd consider mixing a F# project into the .NET solution for backend code in experimental / pet projects only (unless circumstances and team skills allow it for a commercial project). After all, it is one of the small luxuries of the .NET ecosystem that C# and F# both run on the Common Language Runtime (CLR) and can easily be mixed in a single solution.
-
-Previously I was considering the cautious introduction of [Language-Ext](https://github.com/louthy/language-ext) into commercial projects. It's a popular 3rd-party library to move C# even closer to FP, e.g. by allowing monadic composition for elevated types beyond just IEnumerables (which C# already supports natively via LINQ) like `Option<>`, `Task<>` or `Either<>`. After further deliberation I have distanced myself from that idea in favour of 'paradigmatic integrity' and the more crystallised approach described above. 
-
 ## Design by Contract
 
 DbC, inspired by Bertrand Meyer, the inventor of the Eiffel language, ensures that software components interact based on clearly defined specifications. This formal agreement on expected inputs, outputs, and side effects between components leads to more reliable and robust system behaviour, facilitating easier debugging and validation of software correctness. This complements the TDD approach described further above. I believe in a pragmatic application of DbC by limiting its use to the outer edges of each component, i.e. where it interfaces with other components or third-party libraries. 
 
-## Use of Monadic Wrappers 
+## Mixed Paradigm (OO ∩ FP)
 
-### `Option<T>` vs. Nullable Reference Types (C# specific)
+I follow a mixed paradigm approach to coding, following the mixed-paradigm nature of C# itself. This means blending object-oriented (OO) principles for system organisation at the larger scale (SOLID etc.) with a functional programming style (FP) for most of the actual code construction. This means avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating the group of classes that require statefulness. 
+
+This approach reduces side effects, making my code more predictable, easier to test and more suitable for concurrency and parallelism. To achieve this, I draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#). Despite my mantra for a single language across the entire system, I'd consider mixing a F# project into the .NET solution for backend code in experimental or pet projects, and in commercial projects when team skills allow for it. After all, it is one of the small luxuries of the .NET ecosystem that C# and F# both run on the Common Language Runtime (CLR) and can easily be mixed in a single solution without InterOp-related friction.
+
+Previously I was considering the cautious introduction of [Language-Ext](https://github.com/louthy/language-ext) into commercial projects to move C# even closer to FP. After further deliberation I have distanced myself from that idea in favour of 'paradigmatic integrity', i.e. to avoid:  
+a) going too much against the grain of C#  
+b) extreme dependency on a heavy-weight but only medium-popular library  
+c) reduced readability of my code for most C# devs out there
+
+Instead, I have created my own library of light-weight monadic wrappers, i.e. the bare minimum to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) in C#.
+
+### Use of Monadic Wrappers 
+
+#### 1) Instead of Nullable Reference Types: `Option<T>`
 
 `From [8SPHE]`
 
@@ -222,7 +228,7 @@ I apply three simple rules:
 2. Never actually make any types under my control nullable (with the exception of using them for the fields in my monadic wrappers).
 3. Instead, use `Option<T>` for any optional T.
 
-### `Attempt<T>` for Failing Operations
+#### 2) For Failing Operations: `Attempt<T>`
 
 In my default setup, I also have `Attempt<T>` to encapsulate the outcome of an operation that might result in an error message or throw an exception. I steer clear of the name `Try<T>` (idiomatic in the functional world) due to its clash with the specific semantics of the 'Try' prefix for methods in C# (i.e. returning a bool and writing the result into an out variable). I also like `Attempt<T>` more because it's a noun, thereby aligning better than `Try<T>` with the noun-names of the other monadic wrappers. Finally, per my own convention, a function that returns an `Attempt<T>` shall have the 'Safely' prefix in its name, if it wraps potential Exceptions. Example for a signature: 
 
@@ -247,11 +253,11 @@ public record Attempt<T>
 }
 ```
   
-### `Validation<T>` for Validation Error Collections
+#### 3) For Validation Error Collections: `Validation<T>`
 
 Encapsulates a collection of validation results/errors (e.g. to show a user everything that was wrong with their input).
 
   
-### Monadic Composition
+#### Monadic Composition
 
 Combined with .NET's `Task<T>` and `IEnumerable<T>`, these elevated types lend themselves for beautiful monadic compositions with the LINQ comprehension/query syntax. Monadic wrappers thus allow me to build workflows that are more declarative, expressive, concise and fault-tolerant compared to traditional, imperative style coding!
