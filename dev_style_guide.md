@@ -29,7 +29,7 @@ In my .NET / C# projects, I generally follow the set of approaches and paradigms
       - [1) Instead of Nullable Reference Types: `Option<T>`](#1-instead-of-nullable-reference-types-optiont)
       - [2) For Failing Operations: `Attempt<T>`](#2-for-failing-operations-attemptt)
       - [3) For Validation Error Collections: `Validation<T>`](#3-for-validation-error-collections-validationt)
-      - [Monadic Composition](#monadic-composition)
+    - [Monadic Composition](#monadic-composition)
 
 # I) Dev & Team-Work Practices
 
@@ -258,6 +258,8 @@ public record Attempt<T>
 Encapsulates a collection of validation results/errors (e.g. to show a user everything that was wrong with their input).
 
   
-#### Monadic Composition
+### Monadic Composition
 
-Combined with .NET's `Task<T>` and `IEnumerable<T>`, these elevated types lend themselves for beautiful monadic compositions with the LINQ comprehension/query syntax. Monadic wrappers thus allow me to build workflows that are more declarative, expressive, concise and fault-tolerant compared to traditional, imperative style coding!
+Combined with .NET's `Task<T>` and `IEnumerable<T>`, these custom elevated types lend themselves for elegant monadic compositions and Railway Oriented Programming with the LINQ comprehension/query syntax - leading to workflows like the one below, which are declarative, fault-tolerant and so much more expressive compared to traditional, imperative style coding!
+
+![Monadic Workflow / ROP](assets/images/ROP_Monadic_Workflow_Example.png)

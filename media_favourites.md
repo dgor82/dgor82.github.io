@@ -1,4 +1,4 @@
-Last Update: 29/04/2024
+Last Update: 26/05/2024
 
 # Media Favourites
 
@@ -86,6 +86,7 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 * [Complexity and the Fabric of Reality (Stephen Wolfram)](https://lexfridman.com/stephen-wolfram-3/)
 * [Cyc and the Quest to Solve Common Sense Reasoning in AI (Douglas Lenat)](https://lexfridman.com/douglas-lenat)
 * [Doom, Quake, VR, AGI, Programming, Video Games, and Rockets (John Carmack)](https://lexfridman.com/john-carmack)
+* [Measures of Intelligence (François Chollet)](https://lexfridman.com/francois-chollet-2)
 * [Biology, Life, Aliens, Evolution, Embryogenesis & Xenobots (Michael Levin)](https://lexfridman.com/michael-levin)
 
 # Video
