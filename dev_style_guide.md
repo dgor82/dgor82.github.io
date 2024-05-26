@@ -27,7 +27,8 @@ In my .NET / C# projects, I generally follow the set of approaches and paradigms
   - [Design by Contract](#design-by-contract)
   - [Use of Monadic Wrappers](#use-of-monadic-wrappers)
     - [`Option<T>` vs. Nullable Reference Types (C# specific)](#optiont-vs-nullable-reference-types-c-specific)
-    - [Others](#others)
+    - [`Attempt<T>` for Failing Operations](#attemptt-for-failing-operations)
+    - [`Validation<T>` for Validation Error Collections](#validationt-for-validation-error-collections)
     - [Monadic Composition](#monadic-composition)
 
 # I) Dev & Team-Work Practices
@@ -221,19 +222,34 @@ I apply three simple rules:
 2. Never actually make any types under my control nullable (with the exception of using them for the fields in my monadic wrappers).
 3. Instead, use `Option<T>` for any optional T.
 
-### Others
+### `Attempt<T>` for Failing Operations
 
-In my default setup, I also have
-
-- `Result<T>` to encapsulate the return value of an operation that might either succeed or result in an error message.
-  
-- `Attempt<T>` to encapsulate the outcome of an operation that might throw an exception. I steer clear of the name `Try<T>` (idiomatic in the functional world) due to its clash with the specific semantics of the 'Try' prefix for methods in C# (i.e. returning a bool and writing the result into an out variable). I also like `Attempt<T>` more because it's a noun, thereby aligning better than `Try<T>` with the noun-names of the other monadic wrappers. Finally, per my own convention, a function that returns an `Attempt<T>` shall have the 'Safely' prefix in its name. Example for a signature: 
+In my default setup, I also have `Attempt<T>` to encapsulate the outcome of an operation that might result in an error message or throw an exception. I steer clear of the name `Try<T>` (idiomatic in the functional world) due to its clash with the specific semantics of the 'Try' prefix for methods in C# (i.e. returning a bool and writing the result into an out variable). I also like `Attempt<T>` more because it's a noun, thereby aligning better than `Try<T>` with the noun-names of the other monadic wrappers. Finally, per my own convention, a function that returns an `Attempt<T>` shall have the 'Safely' prefix in its name, if it wraps potential Exceptions. Example for a signature: 
 
 ```
 static async Task<Attempt<string>> SafelyProcessInputRequestAsync(string input) {...}
 ```
+
+Note that my `Attempt<T>` combines what would typically be `Result<T>` and `Try<T>` into a single type, thanks to my custom `Failure` record:
+
+```
+public record Failure(Exception? Exception = null, UiString? Error = null); 
+
+public record Attempt<T>
+{
+    internal T? Value { get; }
+    internal Failure? Failure { get; }
+    
+    public bool IsSuccess => Failure == null;
+    public bool IsFailure => !IsSuccess;
+
+    etc...
+}
+```
   
-- `Validation<T>` to encapsulate a collection of validation results/errors (e.g. to show a user everything that was wrong with their input)
+### `Validation<T>` for Validation Error Collections
+
+Encapsulates a collection of validation results/errors (e.g. to show a user everything that was wrong with their input).
 
   
 ### Monadic Composition
