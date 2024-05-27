@@ -30,6 +30,10 @@ In my .NET / C# projects, I generally follow the set of approaches and paradigms
       - [2) For Failing Operations: `Attempt<T>`](#2-for-failing-operations-attemptt)
       - [3) For Validation Error Collections: `Validation<T>`](#3-for-validation-error-collections-validationt)
     - [Monadic Composition](#monadic-composition)
+    - [Immutable Collections in C##](#immutable-collections-in-c)
+      - [Level-1: The list's items](#level-1-the-lists-items)
+      - [Level-2: The list itself](#level-2-the-list-itself)
+      - [Level-3 (Optional): The list's interface](#level-3-optional-the-lists-interface)
 
 # I) Dev & Team-Work Practices
 
@@ -264,3 +268,21 @@ Encapsulates a collection of validation results/errors (e.g. to show a user ever
 Combined with .NET's `Task<T>` and `IEnumerable<T>`, these custom elevated types lend themselves for elegant monadic compositions and Railway Oriented Programming with the LINQ comprehension/query syntax - leading to workflows like the one below, which are declarative, fault-tolerant and so much more expressive compared to traditional, imperative style coding!
 
 ![Monadic Workflow / ROP](assets/images/ROP_Monadic_Workflow_Example.png)
+
+### Immutable Collections in C##
+
+In line with FP, I design for most of my collections (Lists, Sets, Dictionaries...) to be immutable, leading to less error-prone and more thread-safe code. But how do we achieve an immutable Collection in C# (e.g. a List)? It turns out, just using the `ImmutableList<T>` type is not sufficient: we need to take care of immutability on three different levels:
+
+#### Level-1: The list's items
+An `ImmutableList<T>` only prevents us from adding/deleting items, but it turns out the items themselves can be accessed directly and mutated. To achieve immutability also on the item-level, I make sure they are a `record` or `struct`. 
+
+#### Level-2: The list itself
+To achieve guaranteed immutability of the list (i.e. the inability to add or delete items), I use `ImmutableList<T>` instead of `List<T>`. However, it turns out that as a developer I can still call `.Add()` or `.Remove()` on an `IImmutableList<T>` - this will return a new (copied) list with the added item, leaving the original list object in tact. 
+
+#### Level-3 (Optional): The list's interface
+There are some list that require immutability throughout the application's lifetime, not just on the 'object level' but also on the 'conceptual level' (e.g. to represent a fixed menu of operations). To document/enforce this total level of immutability in my code, I need to expose the `ImmutableList<T>` via the `IReadOnlyList<T>` interface, which does not implement `.Add()` or `.Remove()`, thus precluding their accidental use by myself or another developer. 
+
+Sets and Dictionaries are analogous. Here a recent code example with a Set:
+
+![Triple Immutability](assets/images/TripleImmutability.png)
+
