@@ -235,11 +235,7 @@ I apply three simple rules:
 
 #### 2) For Failing Operations: `Attempt<T>`
 
-In my default setup, I also have `Attempt<T>` to encapsulate the outcome of an operation that might result in an error message or throw an exception. I steer clear of the name `Try<T>` (idiomatic in the functional world) due to its clash with the specific semantics of the 'Try' prefix for methods in C# (i.e. returning a bool and writing the result into an out variable). I also like `Attempt<T>` more because it's a noun, thereby aligning better than `Try<T>` with the noun-names of the other monadic wrappers. Finally, per my own convention, a function that returns an `Attempt<T>` shall have the 'Safely' prefix in its name, if it wraps potential Exceptions. Example for a signature: 
-
-```
-static async Task<Attempt<string>> SafelyProcessInputRequestAsync(string input) {...}
-```
+In my default setup, I also have `Attempt<T>` to encapsulate the outcome of an operation that might result in an error message or throw an exception. I steer clear of the name `Try<T>` (idiomatic in the functional world) due to its clash with the specific semantics of the 'Try' prefix for methods in C# (i.e. returning a bool and writing the result into an out variable). I also like `Attempt<T>` more because it's a noun, thereby aligning better than `Try<T>` with the noun-names of the other monadic wrappers. 
 
 Note that my `Attempt<T>` combines what would typically be `Result<T>` and `Try<T>` into a single type, thanks to my custom `Failure` record:
 
