@@ -34,6 +34,7 @@ In my .NET / C# projects, I generally follow the set of approaches and paradigms
       - [Level-1: The list's items](#level-1-the-lists-items)
       - [Level-2: The list itself](#level-2-the-list-itself)
       - [Level-3 (Optional): The list's interface](#level-3-optional-the-lists-interface)
+    - [Drawing the line](#drawing-the-line)
 
 # I) Dev & Team-Work Practices
 
@@ -215,11 +216,11 @@ I follow a mixed paradigm approach to coding, following the mixed-paradigm natur
 This approach reduces side effects, making my code more predictable, easier to test and more suitable for concurrency and parallelism. To achieve this, I draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#). Despite my mantra for a single language across the entire system, I'd consider mixing a F# project into the .NET solution for backend code in experimental or pet projects, and in commercial projects when team skills allow for it. After all, it is one of the small luxuries of the .NET ecosystem that C# and F# both run on the Common Language Runtime (CLR) and can easily be mixed in a single solution without InterOp-related friction.
 
 Previously I was considering the cautious introduction of [Language-Ext](https://github.com/louthy/language-ext) into commercial projects to move C# even closer to FP. After further deliberation I have distanced myself from that idea in favour of 'paradigmatic integrity', i.e. to avoid:  
-a) going too much against the grain of C#  
+a) going too much against the grain of C# which, despite all advancements, still is primarily an OO language  
 b) extreme dependency on a heavy-weight but only medium-popular library  
 c) reduced readability of my code for most C# devs out there
 
-Instead, I have created my own library of light-weight monadic wrappers, i.e. the bare minimum to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) in C#.
+Instead, I have created my own library of light-weight monadic wrappers, i.e. the bare minimum to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) in C#. 
 
 ### Use of Monadic Wrappers 
 
@@ -281,4 +282,8 @@ There are some list that require immutability throughout the application's lifet
 Sets and Dictionaries are analogous. Here a recent code example with a Set:
 
 ![Triple Immutability](assets/images/TripleImmutability.png)
+
+### Drawing the line
+
+Finally, in pure C# projects, this overall mixed-paradigm approach requires recognising where to draw the line, i.e. finding the most natural cleavage plane to resolve the tension between OO and FP. Some advanced FP concepts, like currying and monadic transformations, fall by the wayside. Instead, reliance on a Dependency Injection Framework and SOLID, as the guiding principles for organising the system, in some sense, take their place. 
 
