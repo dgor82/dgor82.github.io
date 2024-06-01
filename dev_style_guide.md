@@ -236,19 +236,19 @@ I apply three simple rules:
 
 #### 2) For Failing Operations: `Attempt<T>`
 
-In my default setup, I also have `Attempt<T>` to encapsulate the outcome of an operation that might result in an error message or throw an exception. I steer clear of the name `Try<T>` (idiomatic in the functional world) due to its clash with the specific semantics of the 'Try' prefix for methods in C# (i.e. returning a bool and writing the result into an out variable). I also like `Attempt<T>` more because it's a noun, thereby aligning better than `Try<T>` with the noun-names of the other monadic wrappers. 
+In my default setup, I also have `Attempt<T>` to encapsulate the outcome of an operation that might either result in a user-oriented failure message (in case of expected/managed problems e.g. related to user input) or throw an exception. I steer clear of the name `Try<T>` (idiomatic in the functional world) due to its clash with the specific semantics of the 'Try' prefix for methods in C# (i.e. returning a bool and writing the result into an out variable). I also like `Attempt<T>` more because it's a noun, thereby aligning better than `Try<T>` with the noun-names of the other monadic wrappers. 
 
-Note that my `Attempt<T>` combines what would typically be `Result<T>` and `Try<T>` into a single type, thanks to my custom `Failure` record:
+Note that my `Attempt<T>` combines what would typically be `Result<T>` and `Try<T>` into a single type, thanks to my custom `Error` record:
 
 ```
-public record Failure(Exception? Exception = null, UiString? Error = null); 
+public record Error(Exception? Exception = null, UiString? FailureMessage = null); 
 
 public record Attempt<T>
 {
     internal T? Value { get; }
-    internal Failure? Failure { get; }
+    internal Error? Error { get; }
     
-    public bool IsSuccess => Failure == null;
+    public bool IsSuccess => Error == null;
     public bool IsFailure => !IsSuccess;
 
     etc...
