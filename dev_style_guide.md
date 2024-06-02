@@ -2,7 +2,7 @@ Last Update: 26/05/2024
 
 # My Dev Style Guide
 
-In my .NET / C# projects, I generally follow the set of approaches and paradigms described below, to guide the development process towards excellence and a maintainable codebase - thereby attempting to avoid the complexity trap that besets so many software projects.
+For long-lived .NET projects, I generally follow the set of approaches and paradigms described below, to help me guide the development process towards elegant and maintainable code. I'm hoping/attempting to thereby avoid the complexity trap that so easily besets software projects.
 
 # ToC
 
@@ -24,17 +24,16 @@ In my .NET / C# projects, I generally follow the set of approaches and paradigms
 - [II) Coding Style](#ii-coding-style)
   - [SOLID Principles](#solid-principles)
   - [Design by Contract](#design-by-contract)
-  - [Mixed Paradigm (OO ∩ FP)](#mixed-paradigm-oo--fp)
-    - [Use of Monadic Wrappers](#use-of-monadic-wrappers)
+  - [Mixed Paradigm (OO ⋃ FP)](#mixed-paradigm-oo--fp)
+    - [Extending C# with Monadic Wrappers](#extending-c-with-monadic-wrappers)
       - [1) Instead of Nullable Reference Types: `Option<T>`](#1-instead-of-nullable-reference-types-optiont)
       - [2) For Failing Operations: `Attempt<T>`](#2-for-failing-operations-attemptt)
       - [3) For Validation Error Collections: `Validation<T>`](#3-for-validation-error-collections-validationt)
-    - [Monadic Composition](#monadic-composition)
+    - [Monadic Composition in C#](#monadic-composition-in-c)
     - [Immutable Collections in C##](#immutable-collections-in-c)
       - [Level-1: The list's items](#level-1-the-lists-items)
       - [Level-2: The list itself](#level-2-the-list-itself)
       - [Level-3 (Optional): The list's interface](#level-3-optional-the-lists-interface)
-    - [Drawing the line](#drawing-the-line)
 
 # I) Dev & Team-Work Practices
 
@@ -154,7 +153,7 @@ Inspired and informed, among others, by [Trunk Based Development](https://trunkb
 3. When ready for merging...  
 a) They run build & test locally for the entire solution for every `Debug_*` configuration.  
 b) On pass, they push their working branch to GitHub which triggers automated PR-creation and merger into main.  
-c) This in turn should trigger a build, test & deploy run for the Release configuration of each **project** (!) marked for deployment (i.e. not solution-wide).  
+c) This in turn should trigger a build, test & deploy run for the Release configuration of each **assembly** (!) marked for deployment (i.e. not solution-wide).  
 d) In case of conflicts, these need to be resolved manually, followed by a renewed PR merger attempt.
 
 4. This means, the PRs are merged into main **before** reviews: reviews shall be conducted post-merger and a corresponding GitHub project-task is generated automatically. 
@@ -197,7 +196,7 @@ Inspirations from
 
 ## SOLID Principles
 
-Adherence to the SOLID Principles, esp. where OO design is at play.
+The SOLID principles guide overall system design & orchestration:
 
 - S = Single Responsibility Principle
 - O = Open/Closed Principle
@@ -209,20 +208,25 @@ Adherence to the SOLID Principles, esp. where OO design is at play.
 
 DbC, inspired by Bertrand Meyer, the inventor of the Eiffel language, ensures that software components interact based on clearly defined specifications. This formal agreement on expected inputs, outputs, and side effects between components leads to more reliable and robust system behaviour, facilitating easier debugging and validation of software correctness. This complements the TDD approach described further above. I believe in a pragmatic application of DbC by limiting its use to the outer edges of each component, i.e. where it interfaces with other components or third-party libraries. 
 
-## Mixed Paradigm (OO ∩ FP)
+## Mixed Paradigm (OO ⋃ FP)
 
-I follow a mixed paradigm approach to coding, following the mixed-paradigm nature of C# itself. This means blending object-oriented (OO) principles for system organisation at the larger scale (SOLID etc.) with a functional programming style (FP) for most of the actual code construction. This means avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating the group of classes that require statefulness. 
+The .NET ecosystem offers the unique luxury to include C# and F# assemblies in a single solution/repository, with near-frictionless interoperability. This allows me to take full advantage of the relative strengths of both languages: 
+- C# for mainstream OO tasks, UI/application development and integration with third-party libraries...
+- F# for elegant, functional domain modelling, data transformation, algorithms / pure business logic...
 
-This approach reduces side effects, making my code more predictable, easier to test and more suitable for concurrency and parallelism. To achieve this, I draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#). Despite my mantra for a single language across the entire system, I'd consider mixing a F# project into the .NET solution for backend code in experimental or pet projects, and in commercial projects when team skills allow for it. After all, it is one of the small luxuries of the .NET ecosystem that C# and F# both run on the Common Language Runtime (CLR) and can easily be mixed in a single solution without InterOp-related friction.
+Even within my C# assemblies, I follow a mixed paradigm approach, following the mixed-paradigm nature of C# itself. This means blending object-oriented (OO) principles for system organisation at the larger scale (SOLID etc.) with a functional programming style (FP) for most of the actual code construction. This means avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating the group of classes that require statefulness. 
 
-Previously I was considering the cautious introduction of [Language-Ext](https://github.com/louthy/language-ext) into commercial projects to move C# even closer to FP. After further deliberation I have distanced myself from that idea in favour of 'paradigmatic integrity', i.e. to avoid:  
-a) going too much against the grain of C# which, despite all advancements, still is primarily an OO language  
-b) extreme dependency on a heavy-weight but only medium-popular library  
-c) reduced readability of my code for most C# devs out there
+This approach reduces side effects, making my code more predictable, easier to test and more suitable for concurrency and parallelism. To achieve this, I draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#).  Previously I was considering the use of [Language-Ext](https://github.com/louthy/language-ext) to move C# even closer to FP. After further deliberation I have distanced myself from that idea in favour of 'paradigmatic integrity', i.e. to ...:
 
-Instead, I have created my own library of light-weight monadic wrappers, i.e. the bare minimum to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) in C#. 
+a) **avoid** going too much against the grain of C# which, despite all advancements in recent versions, still is primarily an OO language  
 
-### Use of Monadic Wrappers 
+b) **avoid** the extreme dependency on a heavy-weight but only medium-popular library like language-ext 
+
+c) **avoid** reduced readability of my C# code for most mainstream .NET devs
+
+Instead, I have created my own library of three light-weight monadic wrappers, i.e. the bare minimum to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) in C# (see below). Finally, this mixed-paradigm approach requires recognising where to draw the line, i.e. finding the most natural cleavage plane to resolve the inevitable tension between OO and FP. Some advanced FP concepts, like currying and monadic transformations, thus fall by the wayside. Instead, reliance on a Dependency Injection Framework and SOLID, as the guiding principles for system orchestration take their place. 
+
+### Extending C# with Monadic Wrappers
 
 #### 1) Instead of Nullable Reference Types: `Option<T>`
 
@@ -260,7 +264,7 @@ public record Attempt<T>
 Encapsulates a collection of validation results/errors (e.g. to show a user everything that was wrong with their input).
 
   
-### Monadic Composition
+### Monadic Composition in C#
 
 Combined with .NET's `Task<T>` and `IEnumerable<T>`, these custom elevated types lend themselves for elegant monadic compositions and Railway Oriented Programming with the LINQ comprehension/query syntax - leading to workflows like the one below, which are declarative, fault-tolerant and so much more expressive compared to traditional, imperative style coding!
 
@@ -282,8 +286,4 @@ There are some list that require immutability throughout the application's lifet
 Sets and Dictionaries are analogous. Here a recent code example with a Set:
 
 ![Triple Immutability](assets/images/TripleImmutability.png)
-
-### Drawing the line
-
-Finally, in pure C# projects, this overall mixed-paradigm approach requires recognising where to draw the line, i.e. finding the most natural cleavage plane to resolve the tension between OO and FP. Some advanced FP concepts, like currying and monadic transformations, fall by the wayside. Instead, reliance on a Dependency Injection Framework and SOLID, as the guiding principles for organising the system, in some sense, take their place. 
 
