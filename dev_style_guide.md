@@ -223,7 +223,7 @@ b) **avoid** the extreme dependency on a heavy-weight but only medium-popular li
 
 c) **avoid** reduced readability of my C# code for most mainstream .NET devs
 
-Instead, I have created my own library of three light-weight monadic wrappers, i.e. the bare minimum to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) in C# (see below). Finally, this mixed-paradigm approach requires recognising where to draw the line, i.e. finding the most natural cleavage plane to resolve the inevitable tension between OO and FP. Some advanced FP concepts, like currying and monadic transformations, thus fall by the wayside. Instead, reliance on a Dependency Injection Framework and SOLID, as the guiding principles for system orchestration take their place. 
+Instead, I have created my own library of three light-weight monadic wrappers, i.e. the bare minimum to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) in C# (see below). Finally, this mixed-paradigm approach requires recognising where to draw the line, i.e. finding the most natural cleavage plane to resolve the inevitable tension between OO and FP. Some advanced FP concepts, like currying and monadic transformations, thus fall by the wayside. Instead, Dependency Injection  and SOLID (in some sense) take their place. 
 
 ### Extending C# with Monadic Wrappers
 
