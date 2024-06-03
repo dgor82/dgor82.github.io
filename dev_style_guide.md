@@ -1,4 +1,4 @@
-Last Update: 02/06/2024
+Last Update: 03/06/2024
 
 # My Dev Style Guide
 
@@ -223,7 +223,7 @@ b) **avoid** the extreme dependency on a heavy-weight but only medium-popular li
 
 c) **avoid** reduced readability of my C# code for most mainstream .NET devs
 
-Instead, I have created my own library of three light-weight monadic wrappers, i.e. the bare minimum to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) in C# (see below). Finally, this mixed-paradigm approach requires recognising where to draw the line, i.e. finding the most natural cleavage plane to resolve the inevitable tension between OO and FP. Some advanced FP concepts, like currying and monadic transformations, thus fall by the wayside. Instead, Dependency Injection  and SOLID (in some sense) take their place. 
+Instead, I have created my own library of three light-weight monadic wrappers, i.e. the bare minimum to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) in C# (see below). Finally, this mixed-paradigm approach requires recognising where to draw the line, i.e. finding the most natural cleavage plane to resolve the inevitable tension between OO and FP. Some more advanced FP concepts (like partial application or monadic transformation) thus fall by the wayside in my code.
 
 ### Extending C# with Monadic Wrappers
 
@@ -274,7 +274,7 @@ Combined with .NET's `Task<T>` and `IEnumerable<T>`, these custom elevated types
 In line with FP, I design for most of my collections (Lists, Sets, Dictionaries...) to be immutable, leading to less error-prone and more thread-safe code. But how do we achieve an immutable Collection in C# (e.g. a List)? It turns out, just using the `ImmutableList<T>` type is not sufficient: we need to take care of immutability on three different levels:
 
 #### Level-1: The list's items
-An `ImmutableList<T>` only prevents us from adding/deleting items, but it turns out the items themselves can be accessed directly and mutated. To achieve immutability also on the item-level, I make sure they are a `record` or `struct`. 
+An `ImmutableList<T>` only prevents us from adding/deleting items, but it turns out the items themselves can be accessed directly and mutated. To achieve immutability also on the item-level, I make sure they are a `record`. 
 
 #### Level-2: The list itself
 To achieve guaranteed immutability of the list (i.e. the inability to add or delete items), I use `ImmutableList<T>` instead of `List<T>`. However, it turns out that as a developer I can still call `.Add()` or `.Remove()` on an `IImmutableList<T>` - this will return a new (copied) list with the added item, leaving the original list object in tact. 
