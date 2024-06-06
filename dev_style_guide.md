@@ -1,4 +1,4 @@
-Last Update: 03/06/2024
+Last Update: 06/06/2024
 
 # My Dev Style Guide
 
@@ -26,9 +26,10 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
   - [Design by Contract](#design-by-contract)
   - [Mixed Paradigm (OO ⋃ FP)](#mixed-paradigm-oo--fp)
     - [Extending C# with Monadic Wrappers](#extending-c-with-monadic-wrappers)
-      - [1) Instead of Nullable Reference Types: `Option<T>`](#1-instead-of-nullable-reference-types-optiont)
-      - [2) For Failing Operations: `Attempt<T>`](#2-for-failing-operations-attemptt)
-      - [3) For Validation Error Collections: `Validation<T>`](#3-for-validation-error-collections-validationt)
+      - [1) Instead of nullable reference types: `Option<T>`](#1-instead-of-nullable-reference-types-optiont)
+      - [2) For potentially throwing operations: `Attempt<T>`](#2-for-potentially-throwing-operations-attemptt)
+      - [3) For potentially failing operations:  `Result<T>`](#3-for-potentially-failing-operations--resultt)
+      - [4) For validation error collections: `Validation<T>`](#4-for-validation-error-collections-validationt)
     - [Monadic Composition in C#](#monadic-composition-in-c)
     - [Immutable Collections in C##](#immutable-collections-in-c)
       - [Level-1: The list's items](#level-1-the-lists-items)
@@ -227,7 +228,7 @@ Instead, I have created my own library of three light-weight monadic wrappers, i
 
 ### Extending C# with Monadic Wrappers
 
-#### 1) Instead of Nullable Reference Types: `Option<T>`
+#### 1) Instead of nullable reference types: `Option<T>`
 
 `From [8SPHE]`
 
@@ -237,35 +238,21 @@ I apply three simple rules:
 2. Never actually make any types under my control nullable (with the exception of using them for the fields in my monadic wrappers).
 3. Instead, use `Option<T>` for any optional T.
 
-#### 2) For Failing Operations: `Attempt<T>`
+#### 2) For potentially throwing operations: `Attempt<T>`
 
-In my default setup, I also have `Attempt<T>` to encapsulate the outcome of an operation that might either result in a user-oriented failure message (in case of expected/managed problems e.g. related to user input) or throw an exception. I steer clear of the name `Try<T>` (idiomatic in the functional world) due to its clash with the specific semantics of the 'Try' prefix for methods in C# (i.e. returning a bool and writing the result into an out variable). I also like `Attempt<T>` more because it's a noun, thereby aligning better than `Try<T>` with the noun-names of the other monadic wrappers. 
-
-Note that my `Attempt<T>` combines what would typically be `Result<T>` and `Try<T>` into a single type, thanks to my custom `Error` record:
-
-```
-public record Error(Exception? Exception = null, UiString? FailureMessage = null); 
-
-public record Attempt<T>
-{
-    internal T? Value { get; }
-    internal Error? Error { get; }
-    
-    public bool IsSuccess => Error == null;
-    public bool IsFailure => !IsSuccess;
-
-    etc...
-}
-```
+In my default setup, I also have `Attempt<T>` to encapsulate the outcome of an operation that might throw an exception. I steer clear of the name `Try<T>` (idiomatic in the functional world) due to its clash with the specific semantics of the 'Try' prefix for methods in C# (i.e. returning a bool and writing the result into an out variable). I also like `Attempt<T>` more because it's a noun, thereby aligning better than `Try<T>` with the noun-names of the other monadic wrappers. 
   
-#### 3) For Validation Error Collections: `Validation<T>`
+#### 3) For potentially failing operations:  `Result<T>`
+
+Encapsulates the return value of an operation that might either succeed or result in a user-facing error message.
+
+#### 4) For validation error collections: `Validation<T>`
 
 Encapsulates a collection of validation results/errors (e.g. to show a user everything that was wrong with their input).
-
   
 ### Monadic Composition in C#
 
-Combined with .NET's `Task<T>` and `IEnumerable<T>`, these custom elevated types lend themselves for elegant monadic compositions and Railway Oriented Programming with the LINQ comprehension/query syntax - leading to workflows like the one below, which are declarative, fault-tolerant and so much more expressive compared to traditional, imperative style coding!
+Combined with .NET's `Task<T>` and `IEnumerable<T>`, these custom elevated types lend themselves for elegant monadic compositions and Railway Oriented Programming with the LINQ comprehension/query syntax (yes, I had to extend them with SelectMany() ('Bind' in FP-speak) overloads) - leading to workflows like the one below, which are declarative, fault-tolerant and, I find, so much more expressive compared to traditional, imperative style coding!
 
 ![Monadic Workflow / ROP](assets/images/ROP_Monadic_Workflow_Example.png)
 
