@@ -24,7 +24,7 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
 - [II) Coding Style](#ii-coding-style)
   - [SOLID Principles](#solid-principles)
   - [Design by Contract](#design-by-contract)
-  - [Mixed Paradigm (OO ⋃ FP)](#mixed-paradigm-oo--fp)
+  - [Mixed Paradigm (OOP ⋃ FP)](#mixed-paradigm-oop--fp)
     - [Extending C# with Monadic Wrappers](#extending-c-with-monadic-wrappers)
       - [1) Instead of nullable reference types: `Option<T>`](#1-instead-of-nullable-reference-types-optiont)
       - [2) For potentially throwing operations: `Attempt<T>`](#2-for-potentially-throwing-operations-attemptt)
@@ -208,23 +208,29 @@ The SOLID principles guide overall system design & orchestration:
 
 DbC, inspired by Bertrand Meyer, the inventor of the Eiffel language, ensures that software components interact based on clearly defined specifications. This formal agreement on expected inputs, outputs, and side effects between components leads to more reliable and robust system behaviour, facilitating easier debugging and validation of software correctness. This complements the TDD approach described further above. I believe in a pragmatic application of DbC by limiting its use to the outer edges of each component, i.e. where it interfaces with other components or third-party libraries. 
 
-## Mixed Paradigm (OO ⋃ FP)
+## Mixed Paradigm (OOP ⋃ FP)
 
-The .NET ecosystem offers the unique luxury to include C# and F# assemblies in a single solution/repository, with near-frictionless interoperability. This allows me to take full advantage of the relative strengths of both languages: 
-- C# for mainstream OO tasks, UI/application development and integration with third-party libraries...
-- F# for elegant, functional domain modelling, data transformation, algorithms / pure business logic...
+The .NET ecosystem offers the unique luxury to include C# and F# assemblies in a single solution/repository, with lower barriers for interoperability than for any other OOP/FP language pair. Here is how I'd like to take full advantage of the relative strengths of both languages: 
 
-Even within my C# assemblies, I follow a mixed paradigm approach, following the mixed-paradigm nature of C# itself. This means blending object-oriented (OO) principles for system organisation at the larger scale (SOLID etc.) with a functional programming style (FP) for most of the actual code construction. This means avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating the group of classes that require statefulness. 
+1) C# as the solution's main language:  
+Great for UI/application development, frictionless integration with third-party libraries and other mainstream OOP tasks
 
-This approach reduces side effects, making my code more predictable, easier to test and more suitable for concurrency and parallelism. To achieve this, I draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#).  Previously I was considering the use of [Language-Ext](https://github.com/louthy/language-ext) to move C# even closer to FP. After further deliberation I have distanced myself from that idea in favour of 'paradigmatic integrity', i.e. to ...:
+2) F# as a supplemental language (for naturally well-isolated, pure logic modules):  
+Great for functional (sub-)domain modelling, elegant and resilient data transformations/algorithms...
 
-a) **avoid** going too much against the grain of C# which, despite all advancements in recent versions, still is primarily an OO language  
+Even within my C# assemblies, I follow a mixed paradigm approach, following the mixed-paradigm nature of C# itself. This means blending OOP principles for system organisation at the larger scale (SOLID, Dependency Injection, etc.) with a functional programming style (FP) for most of the actual code construction. This means avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating the group of classes that require statefulness. 
 
-b) **avoid** the extreme dependency on a heavy-weight but only medium-popular library like language-ext 
+This approach reduces side effects, making my code more predictable, easier to test and more suitable for concurrency and parallelism. As John Carmack argued so well in [this article](http://sevangelatos.com/john-carmack-on/), there are incremental benefits to be gained from moving towards functional style coding even within a traditional OOP language like C++.
 
-c) **avoid** reduced readability of my C# code for most mainstream .NET devs
+To achieve these benefits, I draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#).  Previously I was considering the use of [Language-Ext](https://github.com/louthy/language-ext) to move C# even closer to FP. After further deliberation I have distanced myself from that idea in favour of more 'paradigmatic integrity', i.e. to ...:
 
-Instead, I have created my own library of three light-weight monadic wrappers, i.e. the bare minimum to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) in C# (see below). Finally, this mixed-paradigm approach requires recognising where to draw the line, i.e. finding the most natural cleavage plane to resolve the inevitable tension between OO and FP. Some more advanced FP concepts (like partial application or monadic transformation) thus fall by the wayside in my code.
+a) **avoid** the extreme dependency on such a heavy-weight but only medium-popular library 
+
+b) **avoid** further reduced readability of my C# code for most mainstream .NET devs
+
+c) **avoid** pushing it a bit too far, i.e. going too much against the grain of C#  
+
+Instead, I have created my own library of light-weight monadic wrappers, i.e. the bare minimum to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) in C# (see below). Finally, this mixed-paradigm approach requires recognising where to draw the line, i.e. finding the most natural cleavage plane to resolve the inevitable tension between OOP and FP. Currently, some of the more advanced FP concepts like partial application or monadic transformation fall by the wayside in my C# code. It will be an interesting journey to see how far this boundary can be pushed!
 
 ### Extending C# with Monadic Wrappers
 
