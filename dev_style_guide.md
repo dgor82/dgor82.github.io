@@ -20,7 +20,6 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
   - [Continuous Refactoring \& Simple Design](#continuous-refactoring--simple-design)
   - [Continuous Integration (CI)](#continuous-integration-ci)
     - [CI Workflow Summary](#ci-workflow-summary)
-  - [Commit Messages](#commit-messages)
 - [II) Coding Style](#ii-coding-style)
   - [SOLID Principles](#solid-principles)
   - [Design by Contract](#design-by-contract)
@@ -161,24 +160,6 @@ d) In case of conflicts, these need to be resolved manually, followed by a renew
 
 This approach to CI supports a truly _continuous_ integration without delays from waiting for manual PR reviews.
 Full test-coverage / TDD should ensure well-enough that no breaking changes are introduced into main. Usually, the entire workflow should be automated with project-specific shell scripts designed to run on dev's machines.
-
-I have created this [Custom GPT](https://chatgpt.com/g/g-0KRoUTOLM-generate-short-pr-feature-branch-title) to generate meaningful names for feature branches / PR titles to support the above workflow.
-
-## Commit Messages
-
-I use the A.I. plugin of JetBrains Rider to auto-generate my commit messages, with the following default prompt (in the A.I. Plugin's settings) having proven to generate accurate and useful summaries on the right level of detail. Feel free to copy and modify to your delight!
-
-> Avoid overly verbose descriptions or unnecessary details.
-Start with a short sentence in imperative form, no more than 50 characters long. Don't forget to make it imperative, rather than past tense.
-Then leave an empty line and optionally continue with more details in bullet point form.
-Only add details if the changes made are not very minor or cosmetic e.g. a single rename or clean-up. In that case, no further bullet points / details are needed.
-Just in case details are needed, for more substantial commits, follow these guidelines:
-Add between one and three bullet-point style entries, one for each 'cluster' of change you identified.
-These should not be complete, grammatically correct sentences!
-Each bullet point starts with a new line.
-Avoid adding bullet points about obvious changes e.g. the fact that an interface was updated to include newly added functionality that was already covered in another bullet point.
-Also, do not try to infer the intention behind any changes, or the possible benefits associated with them. 
-
 
 # II) Coding Style
 
