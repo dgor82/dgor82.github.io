@@ -23,6 +23,9 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
 - [II) Coding Style](#ii-coding-style)
   - [SOLID Principles](#solid-principles)
   - [Design by Contract](#design-by-contract)
+  - [Composition over Inheritance](#composition-over-inheritance)
+    - [Problems with inheritance](#problems-with-inheritance)
+    - [Solution](#solution)
   - [Mixed Paradigm (OOP ⋃ FP)](#mixed-paradigm-oop--fp)
     - [Extending C# with Monadic Wrappers](#extending-c-with-monadic-wrappers)
       - [1) Instead of nullable reference types: `Option<T>`](#1-instead-of-nullable-reference-types-optiont)
@@ -188,6 +191,23 @@ The SOLID principles guide overall system design & orchestration:
 ## Design by Contract
 
 DbC, inspired by Bertrand Meyer, the inventor of the Eiffel language, ensures that software components interact based on clearly defined specifications. This formal agreement on expected inputs, outputs, and side effects between components leads to more reliable and robust system behaviour, facilitating easier debugging and validation of software correctness. This complements the TDD approach described further above. I believe in a pragmatic application of DbC by limiting its use to the outer edges of each component, i.e. where it interfaces with other components or third-party libraries. 
+
+## Composition over Inheritance
+
+In OOP design, I prefer composition over inheritance. 
+
+### Problems with inheritance
+1. OOP Languages are designed with the assumption that sub-typing (for polymorphic use) and implementation sharing (to avoid duplication) go hand-in-hand. That's often true but not always, which is where things break down. 
+2. When starting to build class hierarchies, I don't usually have enough foresight to get it right. The deeper the hierarchies grow and the more other modules come to depend on its specifics, the harder it is to change.
+3. Sub classes come to depend on specific ways base classes further up the hierarchy implement things, in a way this breaks encapsulation.
+
+### Solution
+I avoid conflating sub-typing for polymorphism with implementation sharing for DRY!  
+-> For polymorphism, I use interfaces (and avoid using default implementations)  
+-> To achieve DRY, I compose objects that offer specific behaviour into the class requiring it.
+
+Exceptions / pragmatism can be ok, especially in lower level code that other modules won't come to depend on. 
+
 
 ## Mixed Paradigm (OOP ⋃ FP)
 
