@@ -24,7 +24,7 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
   - [SOLID Principles](#solid-principles)
   - [Design by Contract](#design-by-contract)
   - [Composition over Inheritance](#composition-over-inheritance)
-    - [Problems with inheritance](#problems-with-inheritance)
+    - [Problems with implementation-inheritance](#problems-with-implementation-inheritance)
     - [Solution](#solution)
   - [Mixed Paradigm (OOP ⋃ FP)](#mixed-paradigm-oop--fp)
     - [Extending C# with Monadic Wrappers](#extending-c-with-monadic-wrappers)
@@ -196,7 +196,7 @@ DbC, inspired by Bertrand Meyer, the inventor of the Eiffel language, ensures th
 
 In OOP design, I prefer composition over inheritance. 
 
-### Problems with inheritance
+### Problems with implementation-inheritance
 1. OOP Languages are designed with the assumption that sub-typing (for polymorphic use) and implementation sharing (to avoid duplication) go hand-in-hand. That's often true but not always, which is where things break down. 
 2. When starting to build class hierarchies, I don't usually have enough foresight to get it right. The deeper the hierarchies grow and the more other modules come to depend on its specifics, the harder it is to change.
 3. Sub classes come to depend on specific ways base classes further up the hierarchy implement things, in a way this breaks encapsulation.
