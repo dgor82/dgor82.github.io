@@ -1,4 +1,4 @@
-Last Update: 12/06/2024
+Last Update: 21/06/2024
 
 # My Dev Style Guide
 
@@ -37,6 +37,7 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
       - [Level-1: The list's items](#level-1-the-lists-items)
       - [Level-2: The list itself](#level-2-the-list-itself)
       - [Level-3 (Optional): The list's interface](#level-3-optional-the-lists-interface)
+      - [Custom ImmutabilityExtensions](#custom-immutabilityextensions)
 
 # I) Dev & Team-Work Practices
 
@@ -280,3 +281,27 @@ Sets and Dictionaries are analogous. Here a recent code example with a Set:
 
 ![Triple Immutability](assets/images/TripleImmutability.png)
 
+#### Custom ImmutabilityExtensions
+
+In order to facilitate the transformation of any `IEnumerable<T>` into an immutable AND read-only collection (where that is desired), I created the following custom extensions which form part of the basic 'language extensions' I add to my projects:
+
+```
+public static class ImmutabilityExtensions
+{
+    public static IReadOnlyCollection<T> ToImmutableReadOnlyCollection<T>(this IEnumerable<T> enumerable) => 
+        enumerable.ToImmutableList();
+    
+    public static IReadOnlyList<T> ToImmutableReadOnlyList<T>(this IEnumerable<T> enumerable) => 
+        enumerable.ToImmutableList();
+    
+    public static IReadOnlySet<T> ToImmutableReadOnlyHashSet<T>(this IEnumerable<T> enumerable) => 
+        enumerable.ToImmutableHashSet();
+    
+    public static IReadOnlyDictionary<TKey, TValue> 
+        ToImmutableReadOnlyDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dictionary) where TKey : notnull =>
+        dictionary.ToImmutableDictionary();    
+}
+```
+
+This can be further extended to other underlying types like sorted sets or sorted dictionaries. 
+This basically is syntactic sugar to be able to replace the need for a chained `.ToImmutableCollection().AsReadOnly()` with the more concise `.ToImmutableReadOnlyCollection()`. It also makes it less likely that one forgets to append the `.AsReadOnly()`.
