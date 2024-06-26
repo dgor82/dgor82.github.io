@@ -222,7 +222,7 @@ Great for functional (sub-)domain modelling, elegant and resilient data transfor
 
 Even within my C# assemblies, I follow a mixed paradigm approach, following the mixed-paradigm nature of C# itself. This means blending OOP principles for system organisation at the larger scale (SOLID, Dependency Injection, etc.) with a functional programming style (FP) for most of the actual code construction. This means avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating the group of classes that require statefulness. 
 
-This approach reduces side effects, making my code more predictable, easier to test and more suitable for concurrency and parallelism. As John Carmack argued so well in [this article](http://sevangelatos.com/john-carmack-on/), there are incremental benefits to be gained from moving towards functional style coding even within a traditional OOP language like C++.
+This approach reduces side effects, making my code more predictable, easier to test and more suitable for concurrency and parallelism. As John Carmack argued so well in [this article](http://sevangelatos.com/john-carmack-on/), there are incremental benefits to be gained from moving towards functional style coding even within a traditional OOP language.
 
 To achieve these benefits, I draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#).  Previously I was considering the use of [Language-Ext](https://github.com/louthy/language-ext) to move C# even closer to FP. After further deliberation I have distanced myself from that idea in favour of more 'paradigmatic integrity', i.e. to ...:
 
