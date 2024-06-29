@@ -77,7 +77,12 @@ Any unit will typically be represented by a single test class. The various test 
 
 While the emphasis of my unit tests is on testing interfaces / return values, I feel it is justified to selectively also use verifications of the behaviour of mocks of important external dependencies with visible side effects. In this context, one of my [tech mentors](tech_advisory_board.html), [Paul Butcher](https://www.linkedin.com/in/paulbutcher/), likes to jokingly bring up the  "launching of ICBMs" as an example for a side-effect, for which the verification of behaviour might be worthwhile.
 
-My unit tests make use of a modified D.I. services container that inherits from the app's main container but replaces external dependencies (e.g. repositories with database access) with their mocks. Overall it would seem then, that I intuitively have subscribed to the classic (rather than mockist) [school of thought](https://martinfowler.com/articles/mocksArentStubs.html#ClassicalAndMockistTesting). I feel this makes my unit tests more realistic and less brittle in the face of continuous refactoring, thus better supporting the two overriding goals stated at the outset. 
+My unit tests make use of a modified D.I. services container that inherits from the app's main container but replaces external dependencies (e.g. repositories with database access) with their mocks or stubs. Overall it would seem then, that I intuitively have subscribed to the classic (rather than mockist) [school of thought](https://martinfowler.com/articles/mocksArentStubs.html#ClassicalAndMockistTesting). I feel this makes my unit tests more realistic and less brittle in the face of continuous refactoring, thus better supporting the two overriding goals stated at the outset. 
+
+In terms of terminology, I make a clear distinction when naming variables and types between mocks and stubs (more on that, see [Mocks Aren't Stubs (Martin Fowler)](https://martinfowler.com/articles/mocksArentStubs.html)):  
+
+- **Mocks** allow the setting up of expected return values, verification of behaviour etc. via the [Moq](https://github.com/devlooped/moq) mocking framework  
+- **Stubs** are the actual objects used by the code under test, with reduced/modified behaviour, and are often obtained by calling `.Object` on mocks.
 
 ### 2. Integration Tests
 
