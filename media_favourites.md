@@ -53,6 +53,7 @@ These are the blogs I follow (or in whose archives I like to snoop around)
 These articles left a lasting impression. Sorted by when I read/encountered them.
 
 ### 2024
+* [Hackers & Painters](https://paulgraham.com/hp.html)
 * [FP vs. OO](https://blog.cleancoder.com/uncle-bob/2018/04/13/FPvsOO.html)
 * [Advice for new software devs who've read all those other advice essays](https://buttondown.email/hillelwayne/archive/advice-for-new-software-devs-whove-read-all-those/)
 
