@@ -89,6 +89,7 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 * [Doom, Quake, VR, AGI, Programming, Video Games, and Rockets (John Carmack)](https://lexfridman.com/john-carmack)
 * [Measures of Intelligence (François Chollet)](https://lexfridman.com/francois-chollet-2)
 * [Biology, Life, Aliens, Evolution, Embryogenesis & Xenobots (Michael Levin)](https://lexfridman.com/michael-levin)
+* [Virtual Reality, Social Media & the Future of Humans and AI(Jaron Lanier)](https://lexfridman.com/jaron-lanier)
 
 # Video
 * [Modeling Data Streams Using Sparse Distributed Representations (Numenta)](https://youtu.be/iNMbsvK8Q8Y?si=8e5Scuj9uZcVElhl)
