@@ -160,7 +160,7 @@ Inspired and informed, among others, by [Trunk Based Development](https://trunkb
 2. Developers work locally on short-lived feature branches.
 
 3. When ready for merging...  
-a) They run build & test locally for the entire solution for every `Debug_*` configuration.  
+a) They run build & test locally for the entire solution for the relevant `Debug_*` configuration(s).  
 b) On pass, they push their working branch to GitHub which triggers automated PR-creation and merger into main.  
 c) This in turn should trigger a build, test & deploy run for the Release configuration of each **assembly** (!) marked for deployment (i.e. not solution-wide).  
 d) In case of conflicts, these need to be resolved manually, followed by a renewed PR merger attempt.
