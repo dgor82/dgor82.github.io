@@ -1,4 +1,4 @@
-Last Update: 21/06/2024
+Last Update: 22/03/2025
 
 # My Dev Style Guide
 
@@ -98,7 +98,7 @@ While important, these tests would be far lower in number (in line with the typi
 
 ### 4. External Tests
 
-These exist in their own dedicated test module which doesn't have any visibility of any of the actual app. These are therefore isolated unit tests to learn/document/assert the behaviour of external libraries and frameworks, which fulfil any of the below criteria: 
+These may exist in their own dedicated test module which doesn't have any visibility of any of the actual app. These are therefore isolated unit tests merely to learn/document/assert the behaviour of external libraries and frameworks, which fulfil any of the below criteria: 
 
 - They are not-obvious and so benefit from executable documentation
 - I had to 'learn' to use them (--> learning via unit testing)
@@ -134,18 +134,18 @@ A happy-path test that never touches the `throw` branch of this statement still 
 
 ## Vertical Slicing
 
-By adopting Vertical Slicing, I ensure any development efforts are focused on delivering small, incremental pieces of functionality that span all the architectural layers from the UI to the backend and all components and platforms. This facilitates quicker iterations and feedback loops, directly aligning development with user feedback and business requirements, reducing the risk of misaligned features.
+My motivation for adopting Vertical Slicing is to ensure that any development efforts are focused on delivering small, incremental pieces of functionality that span all the architectural layers from the UI to the backend and/or all components and platforms. This translates to quicker iterations and feedback loops, which in turn guarantees tighter alignment of development with user feedback and  requirements.
 
 ## Domain-Driven Design (DDD)
 (replaces 'Metaphor' from XP)
 
-DDD emphasises a deep understanding of the domain to inform our software design. The central concept here is developing a 'ubiquitous language' which domain experts and coders share. This language is reflected in the naming and choice of abstractions in the code, making it partially comprehensible to non-technical stakeholders (eventually with a goal of moving towards an internal Domain-Specific Language (DSL)). DDD ensures our code stays closely aligned with business needs and the real-world subtleties of the domain. It also facilitates a common language and thus clearer communication across all stakeholders. 
+DDD emphasises a deep understanding of the domain to inform our software design. The central concept here is developing a 'ubiquitous language' which domain experts and coders share. This language is reflected in the naming and choice of abstractions in the code, making it partially comprehensible to non-technical stakeholders (eventually with a goal of moving towards an internal Domain-Specific Language (DSL)). DDD ensures our code stays closely aligned with business needs and the real-world subtleties of the domain. It also facilitates a common language and thus improved communication with non-technical domain experts. 
 
-This also implies that the code base becomes the best kind of project documentation (only devOps & high-level architecture may require  documentation separate from code). I totally avoid explanatory comments inside the code-base except for cases where non-obvious or unusual externalities are involved (e.g. config-related code). In most cases when I catch myself feeling the need to add a comment, it turns out there was an underlying naming or design issue. 
+For me, this also implies that the code becomes the primary source of project documentation (with documentation related to DevOps and architecture a possible exception). I avoid explanatory comments inside the code-base except for cases where non-obvious or unusual externalities are involved (e.g. in config-related code). In most cases when I catch myself feeling the need to add a comment, it turns out there was an underlying naming or design issue. 
 
 ## Continuous Refactoring & Simple Design
 
-As described in detail by Uncle Bob, Martin Fowler, Kent Beck etc.
+As described in great detail by authors like Robert C. Martin (Uncle Bob), Martin Fowler, Kent Beck etc.
 
 ## Continuous Integration (CI)
 
@@ -161,14 +161,14 @@ Inspired and informed, among others, by [Trunk Based Development](https://trunkb
 
 3. When ready for merging...  
 a) They run build & test locally for the entire solution for the relevant `Debug_*` configuration(s).  
-b) On pass, they push their working branch to GitHub which triggers automated PR-creation and merger into main.  
-c) This in turn should trigger a build, test & deploy run for the Release configuration of each **assembly** (!) marked for deployment (i.e. not solution-wide).  
+b) On pass, they push their working branch to GitHub which triggers automated PR-creation.  
+c) The subsequent merger into main then triggers a build, test & deploy run for the Release configuration of each **assembly** marked for deployment.  
 d) In case of conflicts, these need to be resolved manually, followed by a renewed PR merger attempt.
 
-4. This means, the PRs are merged into main **before** reviews: reviews shall be conducted post-merger and a corresponding GitHub project-task is generated automatically. 
+1. This means, the PRs are merged into main **before** reviews: reviews shall be conducted post-merger and a corresponding GitHub project-task is generated automatically. 
 
 This approach to CI supports a truly _continuous_ integration without delays from waiting for manual PR reviews.
-Full test-coverage / TDD should ensure well-enough that no breaking changes are introduced into main. Usually, the entire workflow should be automated with project-specific shell scripts designed to run on dev's machines.
+Full test-coverage / TDD should ensure well-enough that no breaking changes are introduced into main. The entire workflow should be automated with project-specific shell scripts designed to run on dev's machines.
 
 # II) Coding Style
 
@@ -196,7 +196,9 @@ The SOLID principles guide overall system design & orchestration:
 
 ## Design by Contract
 
-DbC, inspired by Bertrand Meyer, the inventor of the Eiffel language, ensures that software components interact based on clearly defined specifications. This formal agreement on expected inputs, outputs, and side effects between components leads to more reliable and robust system behaviour, facilitating easier debugging and validation of software correctness. This complements the TDD approach described further above. I believe in a pragmatic application of DbC by limiting its use to the outer edges of each component, i.e. where it interfaces with other components or third-party libraries. 
+DbC, inspired by Bertrand Meyer, the inventor of the Eiffel language, ensures that software components interact based on clearly defined specifications. This formal agreement on expected inputs, outputs, and side effects between components leads to more reliable and robust system behaviour, facilitating easier debugging and validation of software correctness. This complements the TDD approach described further above. 
+
+**I believe in a pragmatic application of DbC by limiting its use to the outer edges of each component, i.e. where it interfaces with other components or third-party libraries.** 
 
 ## Composition over Inheritance
 
@@ -212,12 +214,12 @@ I avoid conflating sub-typing for polymorphism with implementation sharing for D
 -> For polymorphism, I use interfaces (and avoid using default implementations)  
 -> To achieve DRY, I compose objects that offer specific behaviour into the class requiring it.
 
-Exceptions / pragmatism can be ok, especially in lower level code that other modules won't come to depend on. 
+Exceptions in the name of pragmatism are frequent though, especially in lower level code that other modules won't come to depend on, or when a very flat inheritance hierarchy (e.g. 1 level) is virtually guaranteed. 
 
 
 ## Mixed Paradigm (OOP ⋃ FP)
 
-The .NET ecosystem offers the unique luxury to include C# and F# assemblies in a single solution/repository, with lower barriers for interoperability than for any other OOP/FP language pair. Here is how I'd like to take full advantage of the relative strengths of both languages: 
+The .NET ecosystem offers the unique luxury to include C# and F# assemblies in a single solution/repository, with lower barriers for interoperability than for any other OOP/FP language pair. Here is how I'd ideally like to take full advantage of the relative strengths of both languages: 
 
 1) C# as the solution's main language:  
 Great for UI/application development, frictionless integration with third-party libraries and other mainstream OOP tasks
@@ -225,19 +227,21 @@ Great for UI/application development, frictionless integration with third-party 
 2) F# as a supplemental language (for naturally well-isolated, pure logic modules):  
 Great for functional (sub-)domain modelling, elegant and resilient data transformations/algorithms...
 
-Even within my C# assemblies, I follow a mixed paradigm approach, following the mixed-paradigm nature of C# itself. This means blending OOP principles for system organisation at the larger scale (SOLID, Dependency Injection, etc.) with a functional programming style (FP) for most of the actual code construction. This means avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating the group of classes that require statefulness. 
+Commercial realities may dictate sticking to C# exclusively though so F# is, in my case, probably reserved for pet projects. But even within my C# assemblies, I follow a mixed paradigm approach, following the mixed-paradigm nature of C# itself. This roughly means blending OOP principles for system organisation at the larger scale (SOLID, Dependency Injection, etc.) with a functional programming style (FP) for most of the actual code construction. 
 
-This approach reduces side effects, making my code more predictable, easier to test and more suitable for concurrency and parallelism. As John Carmack argued so well in [this article](http://sevangelatos.com/john-carmack-on/), there are incremental benefits to be gained from moving towards functional style coding even within a traditional OOP language.
+More specifically, it means avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating those classes that require statefulness. To reinforce this pattern I follow the convention of using the immutable `record` as my default type and `class` only when statefulness is required. 
 
-To achieve these benefits, I draw on Lambdas, LINQ, pattern matching, switch-expressions etc. (all natively supported by C#).  Previously I was considering the use of [Language-Ext](https://github.com/louthy/language-ext) to move C# even closer to FP. After further deliberation I have distanced myself from that idea in favour of more 'paradigmatic integrity', i.e. to ...:
+This approach reduces side effects, and has made my code more predictable, easier to test and more suitable for concurrency and parallelism. As John Carmack argued so well in [this article](http://sevangelatos.com/john-carmack-on/), there are incremental benefits to be gained from moving towards functional style coding even within a traditional OOP language.
+
+Luckily C# has evolved to include lots of great FP-related facilities and I draw heavily on them: Lambdas, LINQ, pattern matching, switch-expressions etc. To make up for a few still missing facilities in C# - mainly to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) - I have created a library of light-weight monadic wrappers (see section below). 
+
+This mixed-paradigm approach requires recognising where to draw the line, i.e. finding the most natural cleavage plane to resolve the inevitable tension between OOP and FP. Currently, some of the more advanced FP concepts like partial application or monadic transformation fall by the wayside in my C# code. At some point I thus even considered the use of [Language-Ext](https://github.com/louthy/language-ext) to move C# even closer to FP but distanced myself from that idea after further deliberation to ...:
 
 a) **avoid** the extreme dependency on such a heavy-weight but only medium-popular library 
 
 b) **avoid** further reduced readability of my C# code for most mainstream .NET devs
 
-c) **avoid** pushing it a bit too far, i.e. going too much against the grain of C#  
-
-Instead, I have created my own library of light-weight monadic wrappers, i.e. the bare minimum to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) in C# (see below). Finally, this mixed-paradigm approach requires recognising where to draw the line, i.e. finding the most natural cleavage plane to resolve the inevitable tension between OOP and FP. Currently, some of the more advanced FP concepts like partial application or monadic transformation fall by the wayside in my C# code. It will be an interesting journey to see how far this boundary can be pushed!
+c) **avoid** pushing the limits of the paradigm too far, i.e. going too much against the grain of C#  
 
 ### Extending C# with Monadic Wrappers
 
@@ -248,12 +252,12 @@ Instead, I have created my own library of light-weight monadic wrappers, i.e. th
 I apply three simple rules:
   
 1. Enable nullable types consistently via `<Nullable>enable</Nullable>` in Directory.Build.props saved in solution root.
-2. Never actually make any types under my control nullable (with the exception of using them for the fields in my monadic wrappers).
-3. Instead, use `Option<T>` for any optional T.
+2. Very rarely make any types under my control nullable (with the exception of using them for the fields in my monadic wrappers and a few other low-level/technical code exceptions).
+3. Instead, use `Option<T>` for any optional T, especially for Ts representing domain concepts.
 
 #### 2) For potentially throwing operations: `Attempt<T>`
 
-In my default setup, I also have `Attempt<T>` to encapsulate the outcome of an operation that might throw an exception. I steer clear of the name `Try<T>` (idiomatic in the functional world) due to its clash with the specific semantics of the 'Try' prefix for methods in C# (i.e. returning a bool and writing the result into an out variable). I also like `Attempt<T>` more because it's a noun, thereby aligning better than `Try<T>` with the noun-names of the other monadic wrappers. 
+I use `Attempt<T>` to encapsulate the outcome of an operation that might throw an exception. I steer clear of the name `Try<T>` (idiomatic in the functional world) due to its clash with the specific semantics of the 'Try' prefix for methods in C# (i.e. returning a bool and writing the result into an out variable). I also like `Attempt<T>` more because it's a noun, thereby aligning better than `Try<T>` with the noun-names of the other monadic wrappers. 
   
 #### 3) For potentially failing operations:  `Result<T>`
 
@@ -261,7 +265,7 @@ Encapsulates the return value of an operation that might either succeed or resul
 
 #### 4) For validation error collections: `Validation<T>`
 
-Encapsulates a collection of validation results/errors (e.g. to show a user everything that was wrong with their input).
+Encapsulates a collection of validation results/errors (e.g. to show a user everything that was wrong with their input). Only relevant in some projects.
   
 ### Monadic Composition in C#
 
