@@ -34,10 +34,9 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
       - [4) For validation error collections: `Validation<T>`](#4-for-validation-error-collections-validationt)
     - [Monadic Composition in C#](#monadic-composition-in-c)
     - [Immutable Collections in C##](#immutable-collections-in-c)
-      - [Level-1: The list's items](#level-1-the-lists-items)
-      - [Level-2: The list itself](#level-2-the-list-itself)
-      - [Level-3 (Optional): The list's interface](#level-3-optional-the-lists-interface)
-      - [Custom ImmutabilityExtensions](#custom-immutabilityextensions)
+      - [1. What does immutability actually mean in C#?](#1-what-does-immutability-actually-mean-in-c)
+      - [2. What are the performance implications of using immutable collections and how to deal with them?](#2-what-are-the-performance-implications-of-using-immutable-collections-and-how-to-deal-with-them)
+      - [3. To avoid any potential for dogma or Cargo Cult around this: when do we actually benefit from the use of immutable collections?](#3-to-avoid-any-potential-for-dogma-or-cargo-cult-around-this-when-do-we-actually-benefit-from-the-use-of-immutable-collections)
 
 # I) Dev & Team-Work Practices
 
@@ -275,42 +274,40 @@ Combined with .NET's `Task<T>` and `IEnumerable<T>`, these custom elevated types
 
 ### Immutable Collections in C##
 
-In line with FP, I design for most of my collections (Lists, Sets, Dictionaries...) to be immutable, leading to less error-prone and more thread-safe code. But how do we achieve an immutable Collection in C# (e.g. a List)? It turns out, just using the `ImmutableList<T>` type is not sufficient: we need to take care of immutability on three different levels:
+In line with FP, I design for many of my collections (Lists, Sets, Dictionaries...) to be immutable. Immediately, three issues/questions arise though:
 
-#### Level-1: The list's items
-An `ImmutableList<T>` only prevents us from adding/deleting items, but it turns out the items themselves can be accessed directly and mutated. To achieve immutability also on the item-level, I make sure they are a `record`. 
+#### 1. What does immutability actually mean in C#?
 
-#### Level-2: The list itself
-To achieve guaranteed immutability of the list (i.e. the inability to add or delete items), I use `ImmutableList<T>` instead of `List<T>`. However, it turns out that as a developer I can still call `.Add()` or `.Remove()` on an `IImmutableList<T>` - this will return a new (copied) list with the added item, leaving the original list object in tact. 
+In my mind, there are three aspects of immutability in a collection that are completely orthogonal and thus need to be treated separately. Let's explore by starting out with the obvious choice of `ImmutableList<T>`...
 
-#### Level-3 (Optional): The list's interface
-There are some list that require immutability throughout the application's lifetime, not just on the 'object level' but also on the 'conceptual level' (e.g. to represent a fixed menu of operations). To document/enforce this total level of immutability in my code, I need to expose the `ImmutableList<T>` via the `IReadOnlyList<T>` interface, which does not implement `.Add()` or `.Remove()`, thus precluding their accidental use by myself or another developer. 
+**Aspect-1: Immutability of Items** 
 
-Sets and Dictionaries are analogous. Here a recent code example with a Set:
+The items of our ImmutableList are not necessarily immutable themselves. If their properties can freely be mutated, would you still call the list immutable? At the least that is misleading. To ensure immutability of the items themselves, their properties' `set` access modifier should be `init` or at least `private set`. In C# a `record` created with positional properties by default use `init` and is therefore immutable (not considering non-destructive mutation via the `with` keyword). I therefore use records by default. 
 
-![Triple Immutability](assets/images/TripleImmutability.png)
+**Aspect-2: Immutability of the Collection Object**
 
-#### Custom ImmutabilityExtensions
+Developers can still call `.Add()` or `.Remove()` on our ImmutableList for non-destructive mutation. This protects the underlying (original) object which helps e.g. with thread safety and often one of the main objectives.
 
-In order to facilitate the transformation of any `IEnumerable<T>` into an immutable AND read-only collection (where that is desired), I created the following custom extensions which form part of the basic 'language extensions' I add to my projects:
+**Aspect-3: Conceptual Immutability of the Collection**
 
-```
-public static class ImmutabilityExtensions
-{
-    public static IReadOnlyCollection<T> ToImmutableReadOnlyCollection<T>(this IEnumerable<T> enumerable) => 
-        enumerable.ToImmutableList();
-    
-    public static IReadOnlyList<T> ToImmutableReadOnlyList<T>(this IEnumerable<T> enumerable) => 
-        enumerable.ToImmutableList();
-    
-    public static IReadOnlySet<T> ToImmutableReadOnlyHashSet<T>(this IEnumerable<T> enumerable) => 
-        enumerable.ToImmutableHashSet();
-    
-    public static IReadOnlyDictionary<TKey, TValue> 
-        ToImmutableReadOnlyDictionary<TKey, TValue>(this IDictionary<TKey, TValue> dictionary) where TKey : notnull =>
-        dictionary.ToImmutableDictionary();    
-}
-```
+What if the intended immutability is about protecting against other developers' ability to perform  non-destructive mutation? That might be called for in case the collection represents some immutable concept whose integrity must be preserved throughout an application's lifetime (e.g. a fixed menu of operations). In this case having `ImmutableList<T>` as the underlying type is not sufficient and the API needs to, at least, expose / return it via the `IReadOnlyList<T>` interface, which doesn't offer developers mutation methods and thus carries a strong signal. It offers no guarantee, however, because a downcast e.g. to IList<T> is possible, making mutation methods available again. In rare cases, when a real guarantee is needed, the underlying collection would have to be wrapped in a `ReadOnlyCollection` type which can't be downcast. In case of Sets and Dictionaries, a `FrozenSet` and `FrozenDictionary` can be used since .NET 8 which also don't offer mutation methods. 
 
-This can be further extended to other underlying types like sorted sets or sorted dictionaries. 
-This basically is syntactic sugar to be able to replace the need for a chained `.ToImmutableCollection().AsReadOnly()` with the more concise `.ToImmutableReadOnlyCollection()`. It also makes it less likely that one forgets to append the `.AsReadOnly()`.
+
+#### 2. What are the performance implications of using immutable collections and how to deal with them?
+
+Writing to and reading from an `ImmutableList<T>` is one to two orders of magnitudes slower than `List<T>`, for large collections this can be significant. If we know that no (or hardly no) writes are needed, an `ImmutableArray<T>` offers full, mutable read performance (and much more terrible write performance). 
+
+If we need a Set or Dictionary instead of a List and no writing is needed then `FrozenSet` and `FrozenDictionary` (from .NET 8) offer highly optimised read performance. And when batch mutating any immutable type (e.g. in a loop), simply use the `Builder` before converting back to the immutable type. 
+
+In conclusion, I carefully choose the appropriate type/pattern in the spirit of avoiding premature pessimisation. 
+
+#### 3. To avoid any potential for dogma or Cargo Cult around this: when do we actually benefit from the use of immutable collections?
+
+I have come to the conclusion that there is no need for using immutability for locally scoped, private collections which are not passed to other modules and where there is no chance of multi-threaded / shared access (e.g. in single threaded code within a object scoped within a single function invocation). This description may well fit a large majority of collections in a code base. 
+
+In all other cases, I use immutable collections (with a suitable selection regarding the three immutability aspects described above). Examples where it's especially relevant are:
+- when passing collections across module/class boundaries and Snapshot Semantics are desirable (for easier reasoning about code etc.)
+- when there is a chance for multi-threaded access without any synchronisation
+- when representing events from an Event Sourcing datastore
+- when efficient equality comparisons are needed (computed hash codes can simply be cached)
+
