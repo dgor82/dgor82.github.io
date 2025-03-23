@@ -141,16 +141,18 @@ The items of our ImmutableList are not necessarily immutable themselves. If thei
 
 **Aspect-2: Immutability of the Collection Object**
 
-Developers can still call `.Add()` or `.Remove()` on our ImmutableList for non-destructive mutation. This protects the underlying (original) object which helps e.g. with thread safety and often one of the main objectives.
+Developers can still call `.Add()` or `.Remove()` on our ImmutableList for non-destructive mutation. This protects the underlying (original) object which helps e.g. with thread safety and often is one of the main objectives.
 
 **Aspect-3: Conceptual Immutability of the Collection**
 
-What if the intended immutability is about protecting against other developers' ability to perform  non-destructive mutation? That might be called for in case the collection represents some immutable concept whose integrity must be preserved throughout an application's lifetime (e.g. a fixed menu of operations). In this case having `ImmutableList<T>` as the underlying type is not sufficient and the API needs to, at least, expose / return it via the `IReadOnlyList<T>` interface, which doesn't offer developers mutation methods and thus carries a strong signal. It offers no guarantee, however, because a downcast e.g. to IList<T> is possible, making mutation methods available again. In rare cases, when a real guarantee is needed, the underlying collection would have to be wrapped in a `ReadOnlyCollection` type which can't be downcast. In case of Sets and Dictionaries, a `FrozenSet` and `FrozenDictionary` can be used since .NET 8 which also don't offer mutation methods. 
+What if the intended immutability is about protecting against other developers' ability to perform  non-destructive mutation? That might be called for in case the collection represents some immutable concept whose integrity must be preserved throughout an application's lifetime (e.g. a fixed menu of operations). In this case having `ImmutableList<T>` as the underlying type is not sufficient and the API needs to, at least, expose / return it via the `IReadOnlyList<T>` interface, which doesn't offer developers mutation methods. It offers no guarantee, however, because a downcast e.g. to IList<T> is possible, making mutation methods available again. In rare cases, when a real guarantee is needed, the underlying collection would have to be wrapped in a `ReadOnlyCollection` type which can't be downcast.
+
+In case of Sets and Dictionaries, a `FrozenSet` and `FrozenDictionary` can be used since .NET 8 which also don't offer mutation methods. 
 
 
 ### 2. What are the performance implications of using immutable collections and how to deal with them?
 
-Writing to and reading from an `ImmutableList<T>` is one to two orders of magnitudes slower than `List<T>`, for large collections this can be significant. If we know that no (or hardly no) writes are needed, an `ImmutableArray<T>` offers full, mutable read performance (and much more terrible write performance). 
+Writing to and reading from an `ImmutableList<T>` is one to two orders of magnitudes slower than `List<T>`, for large collections this can be significant. If we know that no (or hardly no) writes are needed, an `ImmutableArray<T>` offers full, mutable read performance (and even more terrible write performance). 
 
 If we need a Set or Dictionary instead of a List and no writing is needed then `FrozenSet` and `FrozenDictionary` (from .NET 8) offer highly optimised read performance. And when batch mutating any immutable type (e.g. in a loop), simply use the `Builder` before converting back to the immutable type. 
 
@@ -160,9 +162,9 @@ In conclusion, I carefully choose the appropriate type/pattern in the spirit of 
 
 I have come to the conclusion that there is no need for using immutability for locally scoped, private collections which are not passed to other modules and where there is no chance of multi-threaded / shared access (e.g. in single threaded code within a object scoped within a single function invocation). This description may well fit a large majority of collections in a code base. 
 
-In all other cases, I use immutable collections (with a suitable selection regarding the three immutability aspects described above). Examples where it's especially relevant are:
-- when passing collections across module/class boundaries and Snapshot Semantics are desirable (for easier reasoning about code etc.)
+In all other cases, I use immutable collections (covering an appropriate selection from the three immutability aspects described above). Examples where it's especially relevant are:
+- when passing collections across module/class boundaries and 'Snapshot Semantics' are thus desirable
 - when there is a chance for multi-threaded access without any synchronisation
 - when representing events from an Event Sourcing datastore
-- when efficient equality comparisons are needed (computed hash codes can simply be cached)
+- when efficient equality comparisons are needed (once computed hash codes can simply be cached)
 
