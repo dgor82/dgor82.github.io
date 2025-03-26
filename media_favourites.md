@@ -37,6 +37,7 @@ These are the blogs I follow (or in whose archives I like to snoop around)
 * [Joel on Software](https://www.joelonsoftware.com)
 * [Martin Fowler](https://martinfowler.com)
 * [PragDave](https://pragdave.me/blog/)
+* [Paul Graham](https://www.paulgraham.com/index.html)
 
 ### Historic & Curiosities
 * [Habitat Chronicles](http://habitatchronicles.com)
