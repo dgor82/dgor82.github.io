@@ -13,6 +13,7 @@ Here you can find a curated list of publications I follow as well as some all-ti
     - [Historic \& Curiosities](#historic--curiosities)
     - [.NET Specific](#net-specific)
 - [Articles](#articles)
+    - [2025](#2025)
     - [2024](#2024)
     - [2023](#2023)
     - [2022 and before](#2022-and-before)
@@ -52,6 +53,9 @@ These are the blogs I follow (or in whose archives I like to snoop around)
 
 # Articles
 These articles left a lasting impression. Sorted by when I read/encountered them.
+
+### 2025
+* [The Software Engineering Identity Crisis](https://annievella.com/posts/the-software-engineering-identity-crisis/?utm_source=tldrnewsletter)
 
 ### 2024
 * [Hackers & Painters](https://paulgraham.com/hp.html)
