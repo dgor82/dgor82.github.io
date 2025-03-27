@@ -39,6 +39,7 @@ These are the blogs I follow (or in whose archives I like to snoop around)
 * [Martin Fowler](https://martinfowler.com)
 * [PragDave](https://pragdave.me/blog/)
 * [Paul Graham](https://www.paulgraham.com/index.html)
+* [Annie Vella](https://annievella.com)
 
 ### Historic & Curiosities
 * [Habitat Chronicles](http://habitatchronicles.com)
