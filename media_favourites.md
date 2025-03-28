@@ -62,6 +62,8 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 * [Hackers & Painters](https://paulgraham.com/hp.html)
 * [FP vs. OO](https://blog.cleancoder.com/uncle-bob/2018/04/13/FPvsOO.html)
 * [Advice for new software devs who've read all those other advice essays](https://buttondown.email/hillelwayne/archive/advice-for-new-software-devs-whove-read-all-those/)
+* [User Interface Design for Programmers](https://www.joelonsoftware.com/2001/10/24/user-interface-design-for-programmers/)
+* [Things You Should Never Do, Part I](https://www.joelonsoftware.com/2000/04/06/things-you-should-never-do-part-i/)
 
 ### 2023
 * [Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
