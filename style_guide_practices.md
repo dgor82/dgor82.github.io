@@ -135,7 +135,7 @@ The code is the primary source of project documentation (with documentation rela
 
 However, there are important exceptions:
 - Cases where non-obvious or unusual externalities are involved (e.g. in config-related code)
-- Explanatory `XML doc comments` on deep *public* methods (and even more important on *published* methods, see distinction in [Fowler](https://martinfowler.com/ieeeSoftware/published.pdf)) i.e. those that are non-obvious and hide a good amount of complexity. I usually stick to the `summary` tag, however: it's silly to specify the `params` or `return` values when they are clearly visible from the signature.
+- Explanatory `XML doc comments` on deep *public* methods (and even more important on *published* methods, see distinction in [Fowler](https://martinfowler.com/ieeeSoftware/published.pdf)) i.e. those that are non-obvious and hide a good amount of complexity. I usually stick to the `summary` tag: it's redundant to specify the `params` or `return` values, they are already visible in the signature.
 
 # Continuous Refactoring & Simple Design
 
