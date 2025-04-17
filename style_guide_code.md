@@ -1,4 +1,4 @@
-Last Update: 22/03/2025
+Last Update: 17/04/2025
 
 # Coding Style
 
@@ -9,12 +9,14 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
 - [Coding Style](#coding-style)
 - [ToC](#toc)
 - [Inspirations from](#inspirations-from)
-- [SOLID Principles](#solid-principles)
-- [Design by Contract](#design-by-contract)
-- [Composition over Inheritance](#composition-over-inheritance)
-  - [Problems with implementation-inheritance](#problems-with-implementation-inheritance)
-  - [Solution](#solution)
-- [Explicitness over Conciseness](#explicitness-over-conciseness)
+- [Principled Code Design \& Implementation](#principled-code-design--implementation)
+  - [SOLID Principles](#solid-principles)
+  - [Design by Contract](#design-by-contract)
+  - [Composition over Inheritance](#composition-over-inheritance)
+    - [Problems with implementation-inheritance](#problems-with-implementation-inheritance)
+    - [Solution](#solution)
+  - [Explicitness over Conciseness](#explicitness-over-conciseness)
+  - [Depth vs Shortness of Functions](#depth-vs-shortness-of-functions)
 - [Mixed Paradigm (OOP ⋃ FP)](#mixed-paradigm-oop--fp)
   - [Extending C# with Monadic Wrappers](#extending-c-with-monadic-wrappers)
     - [1) Instead of nullable reference types: `Option<T>`](#1-instead-of-nullable-reference-types-optiont)
@@ -38,10 +40,13 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
 - [FP vs. OO (by Uncle Bob)](https://blog.cleancoder.com/uncle-bob/2018/04/13/FPvsOO.html)
 - [John Carmack on Functional Programming in C++](http://sevangelatos.com/john-carmack-on/)
 - [Railway Oriented Programming (by Scott Wlaschin)](https://fsharpforfunandprofit.com/rop/)
+- [A Philosophy of Software Design vs Clean Code](https://github.com/johnousterhout/aposd-vs-clean-code/blob/main/README.md?utm_source=substack&utm_medium=email)
 
-# SOLID Principles
+# Principled Code Design & Implementation
 
-The SOLID principles guide overall system design & orchestration:
+## SOLID Principles
+
+The SOLID principles guide my overall system design & orchestration:
 
 - S = Single Responsibility Principle
 - O = Open/Closed Principle
@@ -49,34 +54,40 @@ The SOLID principles guide overall system design & orchestration:
 - I = Interface Segregation Principle
 - D = Dependency Inversion Principle
 
-# Design by Contract
+## Design by Contract
 
 DbC, inspired by Bertrand Meyer, the inventor of the Eiffel language, ensures that software components interact based on clearly defined specifications. This formal agreement on expected inputs, outputs, and side effects between components leads to more reliable and robust system behaviour, facilitating easier debugging and validation of software correctness. This complements the TDD approach described further above. 
 
 **I believe in a pragmatic application of DbC by limiting its use to the outer edges of each component, i.e. where it interfaces with other components or third-party libraries.** 
 
-# Composition over Inheritance
+## Composition over Inheritance
 
 In OOP design, I prefer composition over inheritance. 
 
-## Problems with implementation-inheritance
+### Problems with implementation-inheritance
 1. OOP Languages are designed with the assumption that sub-typing (for polymorphic use) and implementation sharing (to avoid duplication) go hand-in-hand. That's often true but not always, which is where things break down. 
 2. When starting to build class hierarchies, I don't usually have enough foresight to get it right. The deeper the hierarchies grow and the more other modules come to depend on its specifics, the harder it is to change.
 3. Sub classes come to depend on specific ways base classes further up the hierarchy implement things, in a way this breaks encapsulation.
 
-## Solution
+### Solution
 I avoid conflating sub-typing for polymorphism with implementation sharing for DRY!  
 -> For polymorphism, I use interfaces (and avoid using default implementations)  
 -> To achieve DRY, I compose objects that offer specific behaviour into the class requiring it.
 
 Exceptions in the name of pragmatism are frequent though, especially in lower level code that other modules won't come to depend on, or when a very flat inheritance hierarchy (e.g. 1 level) is virtually guaranteed. 
 
-# Explicitness over Conciseness
+## Explicitness over Conciseness
 
 Examples:
 1. Configure IDE to suggest or require `sealed` keyword for classes without inheritors. This way we document the fact and are made aware when we change the design by being forced to remove the keyword. 
 
-2. Configure IDE to require `static` keyword for annonymous lambdas that don't use a closure of a variable outside of the lambda's scope. This makes the compiler treat it differently and reduces the load on the GC, in the spirit of avoiding premature pessimisation. 
+2. Configure IDE to require `static` keyword for anonymous lambdas that don't use a closure of a variable outside of the lambda's scope. This makes the compiler treat it differently and reduces the load on the GC, in the spirit of avoiding premature pessimisation. 
+
+## Depth vs Shortness of Functions 
+
+I once took the Clean Code position ("the shorter the better" and "do one thing") as gospel but have since realised that this often leads to entanglement of functions and thus increased cognitive load than a single, longer but coherent function. 
+
+A more useful framework is John Ousterhout's 'depth' which represents the ratio between a function's complexity (probably correlated by its length) and its interface's complexity. The bigger the ratio in favour of a simple interface, the more complexity the function hides and the more useful it therefore is for the overall design of the system. Shortness, then, is not the actual end-goal. 
 
 # Mixed Paradigm (OOP ⋃ FP)
 
@@ -90,7 +101,7 @@ Great for functional (sub-)domain modelling, elegant and resilient data transfor
 
 Commercial realities may dictate sticking to C# exclusively though so F# is, in my case, probably reserved for pet projects. But even within my C# assemblies, I follow a mixed paradigm approach, following the mixed-paradigm nature of C# itself. This roughly means blending OOP principles for system organisation at the larger scale (SOLID, Dependency Injection, etc.) with a functional programming style (FP) for most of the actual code construction. 
 
-More specifically, it means avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating those classes that require statefulness. To reinforce this pattern I follow the convention of using the immutable `record` as my default type and `class` only when statefulness is required. 
+More specifically, it means avoiding imperative code, mutability and stateful operations whenever feasible and carefully demarcating those classes that require statefulness. To reinforce this pattern I follow the convention of using `record` as my default type and `class` only when statefulness is required. 
 
 This approach reduces side effects, and has made my code more predictable, easier to test and more suitable for concurrency and parallelism. As John Carmack argued so well in [this article](http://sevangelatos.com/john-carmack-on/), there are incremental benefits to be gained from moving towards functional style coding even within a traditional OOP language.
 

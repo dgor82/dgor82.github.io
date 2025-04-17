@@ -1,4 +1,4 @@
-Last Update: 22/03/2025
+Last Update: 17/04/2025
 
 # Dev & Team-Work Practices
 
@@ -8,14 +8,16 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
 - [Dev \& Team-Work Practices](#dev--team-work-practices)
 - [ToC](#toc)
 - [Inspirations/sources:](#inspirationssources)
-- [Test-Driven Development (TDD)](#test-driven-development-tdd)
+- [Testing](#testing)
   - [1. Unit Tests](#1-unit-tests)
   - [2. Integration Tests](#2-integration-tests)
   - [3. Acceptance Tests](#3-acceptance-tests)
   - [4. External Tests](#4-external-tests)
   - [Why no test-coverage tools?](#why-no-test-coverage-tools)
+  - [Why no TDD?](#why-no-tdd)
 - [Vertical Slicing](#vertical-slicing)
 - [Domain-Driven Design (DDD)](#domain-driven-design-ddd)
+- [Comments](#comments)
 - [Continuous Refactoring \& Simple Design](#continuous-refactoring--simple-design)
 - [Continuous Integration (CI)](#continuous-integration-ci)
   - [CI Workflow Summary](#ci-workflow-summary)
@@ -32,14 +34,17 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
 - [Effective Software Testing: A developer's guide](https://www.goodreads.com/book/show/59796908-effective-software-testing)
 - [Trunk Based Development](https://trunkbaseddevelopment.com/5-min-overview/)
 - [Mocks Aren't Stubs (Martin Fowler)](https://martinfowler.com/articles/mocksArentStubs.html)
+- [A Philosophy of Software Design vs Clean Code](https://github.com/johnousterhout/aposd-vs-clean-code/blob/main/README.md?utm_source=substack&utm_medium=email)
+- [Public vs. Published Interfaces (Martin Fowler)](https://martinfowler.com/ieeeSoftware/published.pdf)
+
  
-# Test-Driven Development (TDD)
+# Testing
 
 My overriding goal is fearless continuous deployment and fearless continuous refactoring.
   
-To achieve this goal, I follow TDD, which involves writing tests and production code hand-in-hand, ensuring every new feature starts with a failing test. This leads to test coverage by default, simpler design, and more modular, decoupled code. 
+To achieve this goal, I take testing very seriously, which also leads to simpler design, and more modular, decoupled code. 
 
-I have discovered that, with true TDD, the test code (a first-class citizen in terms of coding standards) becomes the *full* specification, *executable* documentation and even a fairly good representation of *the user*!
+I have come to the view that the test code (a first-class citizen in terms of coding standards) becomes the *full* specification, *executable* documentation and even a fairly good proxy for *the user*!
 
 The following sections describe how I interpret and apply the 'test pyramid' - with the different kinds of tests in it, and the (sometimes soft) boundaries between them. I end with a few words on why I don't use test coverage tools.
 
@@ -86,7 +91,7 @@ These may exist in their own dedicated test module which doesn't have any visibi
 
 ## Why no test-coverage tools?
 
-Especially on a greenfield project, where the developer(s) are 'test-infected' (think 'test first', follow TDD...) they don't add much value but they do create considerable overhead and distraction.
+On a project created by 'test-infected' developers, where coverage will by default already be large, they don't add much value but create considerable overhead and distraction.
   
 The crux is that '100%' test coverage is a totally meaningless measurement target!
 
@@ -111,6 +116,10 @@ A happy-path test that never touches the `throw` branch of this statement still 
   
 ... time and attention that would be better spent thinking deeply about important boundary cases!
 
+## Why no TDD?
+
+Notice that I am not following 'Test-Driven Development' despite advocacy by many of my programming heroes. This is one of the points where I side with John Ousterhout in his [epic debate](https://github.com/johnousterhout/aposd-vs-clean-code/blob/main/README.md?utm_source=substack&utm_medium=email) with Uncle Bob. In short, I found that the very tactical back- and forth between test code and production code, in seconds-long cycles as per true TDD, indeed distracted me from higher-level, design-oriented thinking in larger chunks. This style guide is neutral on the use of TDD as long as you otherwise take tests as seriously as I do. 
+
 # Vertical Slicing
 
 My motivation for adopting Vertical Slicing is to ensure that any development efforts are focused on delivering small, incremental pieces of functionality that span all the architectural layers from the UI to the backend and/or all components and platforms. This translates to quicker iterations and feedback loops, which in turn guarantees tighter alignment of development with user feedback and  requirements.
@@ -120,7 +129,13 @@ My motivation for adopting Vertical Slicing is to ensure that any development ef
 
 DDD emphasises a deep understanding of the domain to inform our software design. The central concept here is developing a 'ubiquitous language' which domain experts and coders share. This language is reflected in the naming and choice of abstractions in the code, making it partially comprehensible to non-technical stakeholders (eventually with a goal of moving towards an internal Domain-Specific Language (DSL)). DDD ensures our code stays closely aligned with business needs and the real-world subtleties of the domain. It also facilitates a common language and thus improved communication with non-technical domain experts. 
 
-For me, this also implies that the code becomes the primary source of project documentation (with documentation related to DevOps and architecture a possible exception). I avoid explanatory comments inside the code-base except for cases where non-obvious or unusual externalities are involved (e.g. in config-related code). In most cases when I catch myself feeling the need to add a comment, it turns out there was an underlying naming or design issue. 
+# Comments
+
+The code is the primary source of project documentation (with documentation related to DevOps and architecture a possible exception). I avoid explanatory comments inside the code-base. In most cases when I catch myself feeling the need to add a comment, it turns out there was an underlying naming or design issue. On this issue I side with Uncle Bob in his [epic debate](https://github.com/johnousterhout/aposd-vs-clean-code/blob/main/README.md?utm_source=substack&utm_medium=email) with John Ousterhout. 
+
+However, there are important exceptions:
+- Cases where non-obvious or unusual externalities are involved (e.g. in config-related code)
+- Explanatory `XML doc comments` on deep *public* methods (and even more important on *published* methods, see distinction in [Fowler](https://martinfowler.com/ieeeSoftware/published.pdf)) i.e. those that are non-obvious and hide a good amount of complexity. I usually stick to the `summary` tag, however: it's silly to specify the `params` or `return` values when they are clearly visible from the signature.
 
 # Continuous Refactoring & Simple Design
 
