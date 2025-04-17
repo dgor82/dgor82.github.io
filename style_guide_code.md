@@ -79,9 +79,9 @@ Exceptions in the name of pragmatism are frequent though, especially in lower le
 ## Explicitness over Conciseness
 
 Examples:
-1. Configure IDE to suggest or require `sealed` keyword for classes without inheritors. This way we document the fact and are made aware when we change the design by being forced to remove the keyword. 
+1. Configure IDE to suggest or require the `sealed` keyword for classes without inheritors. This way we document the fact and are made aware when we change the design by being forced to remove the keyword. 
 
-2. Configure IDE to require `static` keyword for anonymous lambdas that don't use a closure of a variable outside of the lambda's scope. This makes the compiler treat it differently and reduces the load on the GC, in the spirit of avoiding premature pessimisation. 
+2. In the spirit of avoiding premature pessimisation, configure the IDE to require the `static` keyword for anonymous lambdas that don't use a closure over a variable outside of its scope. This allows the compiler to treat it in an optimised way (reducing the load on the GC). 
 
 ## Depth vs Shortness of Functions 
 
