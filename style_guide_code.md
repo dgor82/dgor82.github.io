@@ -14,6 +14,7 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
 - [Composition over Inheritance](#composition-over-inheritance)
   - [Problems with implementation-inheritance](#problems-with-implementation-inheritance)
   - [Solution](#solution)
+- [Explicitness over Conciseness](#explicitness-over-conciseness)
 - [Mixed Paradigm (OOP ⋃ FP)](#mixed-paradigm-oop--fp)
   - [Extending C# with Monadic Wrappers](#extending-c-with-monadic-wrappers)
     - [1) Instead of nullable reference types: `Option<T>`](#1-instead-of-nullable-reference-types-optiont)
@@ -70,6 +71,12 @@ I avoid conflating sub-typing for polymorphism with implementation sharing for D
 
 Exceptions in the name of pragmatism are frequent though, especially in lower level code that other modules won't come to depend on, or when a very flat inheritance hierarchy (e.g. 1 level) is virtually guaranteed. 
 
+# Explicitness over Conciseness
+
+Examples:
+1. Configure IDE to suggest or require `sealed` keyword for classes without inheritors. This way we document the fact and are made aware when we change the design by being forced to remove the keyword. 
+
+2. Configure IDE to require `static` keyword for annonymous lambdas that don't use a closure of a variable outside of the lambda's scope. This makes the compiler treat it differently and reduces the load on the GC, in the spirit of avoiding premature pessimisation. 
 
 # Mixed Paradigm (OOP ⋃ FP)
 
