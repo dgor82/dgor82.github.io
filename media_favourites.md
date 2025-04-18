@@ -57,6 +57,7 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 
 ### 2025
 * [The Software Engineering Identity Crisis](https://annievella.com/posts/the-software-engineering-identity-crisis/?utm_source=tldrnewsletter)
+* [On the foolishness of "natural language programming" (Dijkstra, 1978)](https://www.cs.utexas.edu/~EWD/ewd06xx/EWD667.PDF)
 
 ### 2024
 * [Hackers & Painters](https://paulgraham.com/hp.html)
