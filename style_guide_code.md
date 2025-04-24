@@ -28,6 +28,9 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
     - [1. What does immutability actually mean in C#?](#1-what-does-immutability-actually-mean-in-c)
     - [2. What are the performance implications of using immutable collections and how to deal with them?](#2-what-are-the-performance-implications-of-using-immutable-collections-and-how-to-deal-with-them)
     - [3. To avoid any potential for dogma or Cargo Cult around this: when do we actually benefit from the use of immutable collections?](#3-to-avoid-any-potential-for-dogma-or-cargo-cult-around-this-when-do-we-actually-benefit-from-the-use-of-immutable-collections)
+  - [Guide on Types: Class/Struct/Record](#guide-on-types-classstructrecord)
+    - [The 6 Possible Permutations](#the-6-possible-permutations)
+    - [Defining Features](#defining-features)
 
 # Inspirations from
 - [Clean Code](https://www.goodreads.com/book/show/3735293-clean-code)
@@ -185,4 +188,26 @@ In all other cases, I use immutable collections (covering an appropriate selecti
 - when there is a chance for multi-threaded access without any synchronisation
 - when representing events from an Event Sourcing datastore
 - when efficient equality comparisons are needed (once computed hash codes can simply be cached)
+
+## Guide on Types: Class/Struct/Record
+
+C# offers a rich selection of types and it wasn't obvious to me how to choose best to support my FP-oriented, mixed paradigm approach to programming. Leaving aside fairly clear cut types like `interface` and `enum`, I have created the following guide  to help me choose appropriately between `class`, `struct`, `record`, `record struct` and the use of the `readonly` modifier on structs. 
+
+This guide is based on the underlying insight of the orthogonality between these keywords (as reflected in the following tables).
+
+### The 6 Possible Permutations
+
+|           | class | struct | readonly struct |
+|-----------|-------|--------|-----------------|
+| default   | d-c   | d-s    | d-rs            |
+| record    | r-c   | r-s    | r-rs            |
+
+### Defining Features
+
+![Defining Features for Type Guide](assets/images/Type%20Guide%20all%20Permutations.png)
+
+Notes:
+- Structs go on the stack only if they are not a member of a reference type. In that case they are stored on the heap together with its home object. 
+- All record types are pure compile-time constructs. They compile down to regular classes or structs plus additional synthesised convenience members (like `ToString()` for pretty printing, a deconstructor, and the methods needed for non-destructive mutation).
+- Careful: counter-intuitively, `record structs` are fully mutable when not used with the `readonly` keyword. 
 
