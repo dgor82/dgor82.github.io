@@ -88,7 +88,7 @@ Examples:
 
 ## Depth vs Shortness of Functions 
 
-I once took the Clean Code position ("the shorter the better" and "do one thing") as gospel but have since realised that this often leads to entanglement of functions and thus increased cognitive load than a single, longer but coherent function. 
+I once took the Clean Code position ("the shorter the better" and "do one thing") as gospel but have since realised that this often leads to entanglement of functions and thus increased cognitive load compared to a single, longer but coherent function. 
 
 A more useful framework is John Ousterhout's 'depth' which represents the ratio between a function's complexity (probably correlated by its length) and its interface's complexity. The bigger the ratio in favour of a simple interface, the more complexity the function hides and the more useful it therefore is for the overall design of the system. Shortness, then, is not the actual end-goal. 
 
