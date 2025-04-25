@@ -59,9 +59,11 @@ The SOLID principles guide my overall system design & orchestration:
 
 ## Design by Contract
 
-DbC, inspired by Bertrand Meyer, the inventor of the Eiffel language, ensures that software components interact based on clearly defined specifications. This formal agreement on expected inputs, outputs, and side effects between components leads to more reliable and robust system behaviour, facilitating easier debugging and validation of software correctness. This complements the TDD approach described further above. 
+I somewhat adhere to DbC (originally described by Bertrand Meyer and implemented in the Eiffel language). It ensures that software components interact based on clearly and formally defined agreements on expected inputs, outputs, invariants etc. It complements my testing strategy (see above) to achieve system robustness.
 
-**I believe in a pragmatic application of DbC by limiting its use to the outer edges of each component, i.e. where it interfaces with other components or third-party libraries.** 
+My pragmatic application of DbC means focusing on asserting pre-conditions mainly on the outer edges of modules/components (and especially when interfacing 3rd party libraries). 
+
+**Note that this 'crashing fast and hard' approach represents the exact opposite of the 'defensive programming' anti-pattern**. 
 
 ## Composition over Inheritance
 
