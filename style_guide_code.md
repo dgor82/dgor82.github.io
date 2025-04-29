@@ -18,12 +18,18 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
   - [Explicitness over Conciseness](#explicitness-over-conciseness)
   - [Depth vs Shortness of Functions](#depth-vs-shortness-of-functions)
 - [Mixed Paradigm (OOP ⋃ FP)](#mixed-paradigm-oop--fp)
-  - [Extending C# with Monadic Wrappers](#extending-c-with-monadic-wrappers)
+  - [Extending C# with Monads](#extending-c-with-monads)
     - [1) Instead of nullable reference types: `Option<T>`](#1-instead-of-nullable-reference-types-optiont)
-    - [2) For potentially throwing operations: `Attempt<T>`](#2-for-potentially-throwing-operations-attemptt)
-    - [3) For potentially failing operations:  `Result<T>`](#3-for-potentially-failing-operations--resultt)
-    - [4) For validation error collections: `Validation<T>`](#4-for-validation-error-collections-validationt)
+    - [2) For potentially failing operations:  `Result<T>`](#2-for-potentially-failing-operations--resultt)
+    - [3) For validation error collections: `Validation<T>`](#3-for-validation-error-collections-validationt)
   - [Monadic Composition in C#](#monadic-composition-in-c)
+  - [Combinator Extensions](#combinator-extensions)
+    - [Apply](#apply)
+    - [Tap](#tap)
+    - [Compose](#compose)
+    - [Fork](#fork)
+    - [Alternate](#alternate)
+    - [Transduce](#transduce)
   - [Immutable Collections in C##](#immutable-collections-in-c)
     - [1. What does immutability actually mean in C#?](#1-what-does-immutability-actually-mean-in-c)
     - [2. What are the performance implications of using immutable collections and how to deal with them?](#2-what-are-the-performance-implications-of-using-immutable-collections-and-how-to-deal-with-them)
@@ -39,6 +45,7 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
     - [Full Book](https://www.goodreads.com/book/show/18043011-clean-architecture)
 - [The Pragmatic Programmer](https://www.goodreads.com/book/show/4099.The_Pragmatic_Programmer)
 - [Functional Programming in C#](https://www.goodreads.com/book/show/31550964-functional-programming-in-c)
+- [Functional Programming with C#](https://www.goodreads.com/book/show/79735449-functional-programming-with-c)
 - [Domain Modeling Made Functional: Tackle Software Complexity with Domain-Driven Design and F#](https://www.goodreads.com/book/show/34921689-domain-modeling-made-functional)
 - [FP vs. OO (by Uncle Bob)](https://blog.cleancoder.com/uncle-bob/2018/04/13/FPvsOO.html)
 - [John Carmack on Functional Programming in C++](http://sevangelatos.com/john-carmack-on/)
@@ -110,7 +117,7 @@ More specifically, it means avoiding imperative code, mutability and stateful op
 
 This approach reduces side effects, and has made my code more predictable, easier to test and more suitable for concurrency and parallelism. As John Carmack argued so well in [this article](http://sevangelatos.com/john-carmack-on/), there are incremental benefits to be gained from moving towards functional style coding even within a traditional OOP language.
 
-Luckily C# has evolved to include lots of great FP-related facilities and I draw heavily on them: Lambdas, LINQ, pattern matching, switch-expressions etc. To make up for a few still missing facilities in C# - mainly to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) - I have created a library of light-weight monadic wrappers (see section below). 
+Luckily C# has evolved to include lots of great FP-related facilities and I draw heavily on them: Lambdas, LINQ, pattern matching, switch-expressions etc. To make up for a few still missing facilities in C# - mainly to enable [Railway Oriented Programming](https://fsharpforfunandprofit.com/rop/) (ROP) - I have created a library of light-weight monads (see section below). 
 
 This mixed-paradigm approach requires recognising where to draw the line, i.e. finding the most natural cleavage plane to resolve the inevitable tension between OOP and FP. Currently, some of the more advanced FP concepts like partial application or monadic transformation fall by the wayside in my C# code. At some point I thus even considered the use of [Language-Ext](https://github.com/louthy/language-ext) to move C# even closer to FP but distanced myself from that idea after further deliberation to ...:
 
@@ -120,7 +127,7 @@ b) **avoid** further reduced readability of my C# code for most mainstream .NET 
 
 c) **avoid** pushing the limits of the paradigm too far, i.e. going too much against the grain of C#  
 
-## Extending C# with Monadic Wrappers
+## Extending C# with Monads
 
 ### 1) Instead of nullable reference types: `Option<T>`
 
@@ -129,18 +136,14 @@ c) **avoid** pushing the limits of the paradigm too far, i.e. going too much aga
 I apply three simple rules:
   
 1. Enable nullable types consistently via `<Nullable>enable</Nullable>` in Directory.Build.props saved in solution root.
-2. Very rarely make any types under my control nullable (with the exception of using them for the fields in my monadic wrappers and a few other low-level/technical code exceptions).
+2. Very rarely make any types under my control nullable (with the exception of using them for the fields in my monads and a few other low-level/technical code exceptions).
 3. Instead, use `Option<T>` for any optional T, especially for Ts representing domain concepts.
-
-### 2) For potentially throwing operations: `Attempt<T>`
-
-I use `Attempt<T>` to encapsulate the outcome of an operation that might throw an exception. I steer clear of the name `Try<T>` (idiomatic in the functional world) due to its clash with the specific semantics of the 'Try' prefix for methods in C# (i.e. returning a bool and writing the result into an out variable). I also like `Attempt<T>` more because it's a noun, thereby aligning better than `Try<T>` with the noun-names of the other monadic wrappers. 
   
-### 3) For potentially failing operations:  `Result<T>`
+### 2) For potentially failing operations:  `Result<T>`
 
-Encapsulates the return value of an operation that might either succeed or result in a user-facing error message.
+Encapsulates the return value of an operation that might either succeed or result in an exception or a user-facing error message. It uses a discriminated union for the failure state which can either be an `Exception` or a handled `BusinessError` (with a meaningful and localised message to the user). The DU is implemented with an abstract `Failure` class. In the `Match()` clause where I handle the `onFailure` case I use a `switch expression`, where needed, to treat these two types of failures differently.  
 
-### 4) For validation error collections: `Validation<T>`
+### 3) For validation error collections: `Validation<T>`
 
 Encapsulates a collection of validation results/errors (e.g. to show a user everything that was wrong with their input). Only relevant in some projects.
   
@@ -149,6 +152,28 @@ Encapsulates a collection of validation results/errors (e.g. to show a user ever
 Combined with .NET's `Task<T>` and `IEnumerable<T>`, these custom elevated types lend themselves for elegant monadic compositions and Railway Oriented Programming with the LINQ comprehension/query syntax (yes, I had to extend them with SelectMany() ('Bind' in FP-speak) overloads) - leading to workflows like the one below, which are declarative, fault-tolerant and, I find, so much more expressive compared to traditional, imperative style coding!
 
 ![Monadic Workflow / ROP](assets/images/ROP_Monadic_Workflow_Example.png)
+
+## Combinator Extensions
+
+I use the following combinators as part of my custom language extensions for elegant composition of functions and transformations:
+
+### Apply
+`Apply<TIn, TOut>(this TIn @this, Func<TIn, TOut> f)` - Transforms a value by applying a function to it, enabling function application as an extension method for more readable, left-to-right function composition.
+
+### Tap
+`Tap<T>(this T @this, Action<T> sideEffect)` - Executes a side effect on a value while returning the original value, useful for logging, debugging, or monitoring values in the middle of function pipelines.
+
+### Compose
+`Compose<TIn, TOldOut, TNewOut>(this Func<TIn, TOldOut> @this, Func<TOldOut, TNewOut> f)` - Combines two functions by piping the output of the first into the input of the second, creating a new function that represents their composition.
+
+### Fork
+`Fork<TIn, T1, T2, TOut>(this TIn @this, Func<TIn, T1> f1, Func<TIn, T2> f2, Func<T1, T2, TOut> joinFunc)` - Processes a single value in multiple independent ways before joining the results, enabling parallel transformation paths that converge to a final result.
+
+### Alternate
+`Alternate<TIn, TOut>(this TIn @this, params Func<TIn, TOut>[] altFuncs)` - Tries a series of functions sequentially until one succeeds, providing fallback mechanisms when operations might fail or return `null`/`None`.
+
+### Transduce
+`Transduce<TIn, TFilterOut, TFinalOut>(this IEnumerable<TIn> @this, Func<IEnumerable<TIn>, IEnumerable<TFilterOut>> transformer, Func<IEnumerable<TFilterOut>, TFinalOut> aggregator)` - Combines transformation and aggregation operations on collections into a single step, optimizing memory usage by avoiding the creation of intermediate collections.
 
 ## Immutable Collections in C##
 
