@@ -210,6 +210,11 @@ In conclusion, I carefully choose the appropriate type/pattern in the spirit of 
 
 I have come to the conclusion that there is no need for using immutability for locally scoped, private collections which are not passed to other modules and where there is no chance of multi-threaded / shared access (e.g. in single threaded code within a object scoped within a single function invocation). This description may well fit a large majority of collections in a code base. 
 
+When all three of the following conditions are met, it is sufficient to call `.AsReadOnly` on a normal, mutable collection before passing it over a module boundary:  
+- a) 'Aspect-3' conceptual immutability needs to be enforced/guaranteed in the calling code AND  
+- b) the home class of this collection needs to retain the ability to modify the original collection OR the performance OR code conciseness of default mutable collections are desired AND  
+- c) thread-safety is of no concern because it is guaranteed that the calling/consuming code runs on the same thread as the home class
+
 In all other cases, I use immutable collections (covering an appropriate selection from the three immutability aspects described above). Examples where it's especially relevant are:
 - when passing collections across module/class boundaries and 'Snapshot Semantics' are thus desirable
 - when there is a chance for multi-threaded access without any synchronisation
