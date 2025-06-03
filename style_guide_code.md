@@ -1,4 +1,4 @@
-Last Update: 24/04/2025
+Last Update: 03/06/2025
 
 # Coding Style
 
@@ -51,6 +51,7 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
 - [John Carmack on Functional Programming in C++](http://sevangelatos.com/john-carmack-on/)
 - [Railway Oriented Programming (by Scott Wlaschin)](https://fsharpforfunandprofit.com/rop/)
 - [A Philosophy of Software Design vs Clean Code](https://github.com/johnousterhout/aposd-vs-clean-code/blob/main/README.md?utm_source=substack&utm_medium=email)
+- [C# in a Nutshell](https://www.goodreads.com/book/show/195616085-c-12-in-a-nutshell)
 
 # Principled Code Design & Implementation
 
