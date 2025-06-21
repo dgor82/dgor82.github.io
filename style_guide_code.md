@@ -1,4 +1,4 @@
-Last Update: 03/06/2025
+Last Update: 21/06/2025
 
 # Coding Style
 
@@ -17,6 +17,7 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
     - [Solution](#solution)
   - [Explicitness over Conciseness](#explicitness-over-conciseness)
   - [Depth vs Shortness of Functions](#depth-vs-shortness-of-functions)
+  - [Dependency Injection](#dependency-injection)
 - [Mixed Paradigm (OOP ⋃ FP)](#mixed-paradigm-oop--fp)
   - [Extending C# with Monads](#extending-c-with-monads)
     - [1) Instead of nullable reference types: `Option<T>`](#1-instead-of-nullable-reference-types-optiont)
@@ -52,6 +53,7 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
 - [Railway Oriented Programming (by Scott Wlaschin)](https://fsharpforfunandprofit.com/rop/)
 - [A Philosophy of Software Design vs Clean Code](https://github.com/johnousterhout/aposd-vs-clean-code/blob/main/README.md?utm_source=substack&utm_medium=email)
 - [C# in a Nutshell](https://www.goodreads.com/book/show/195616085-c-12-in-a-nutshell)
+- [Dependency Injection in .NET](https://www.goodreads.com/book/show/35055958-dependency-injection-in-net)
 
 # Principled Code Design & Implementation
 
@@ -101,6 +103,21 @@ Examples:
 I once took the Clean Code position ("the shorter the better" and "do one thing") as gospel but have since realised that this often leads to entanglement of functions and thus increased cognitive load compared to a single, longer but coherent function. 
 
 A more useful framework is John Ousterhout's 'depth' which represents the ratio between a function's complexity (probably correlated by its length) and its interface's complexity. The bigger the ratio in favour of a simple interface, the more complexity the function hides and the more useful it therefore is for the overall design of the system. Shortness, then, is not the actual end-goal. 
+
+## Dependency Injection
+
+I apply Dependency Injection selectively rather than universally, distinguishing between the DI principle (constructor injection with explicit dependencies) and DI frameworks (like Microsoft.Extensions.DependencyInjection). Before deciding how to handle any potential dependency, I apply a necessity test: Can this be a pure function? If yes, I make it a static method, extension method, or local function rather than a class. 
+
+If it needs to be a class, is it an implementation detail (value objects, simple business entities, local utilities, short-lived objects) or an architectural dependency? Implementation details can be created with new as they're stable collaborators that are genuinely part of the consuming class's natural object model.
+
+I use constructor injection for architectural dependencies: 
+- external systems (databases, APIs, file systems), 
+- cross-cutting concerns (logging, caching), 
+- complex domain services requiring abstraction, 
+- components where I need multiple implementations, or 
+- cases requiring mocking for testing. 
+
+I create interfaces only when I actually have polymorphic behaviour or need to mock for testing—not solely to enable injection. The goal is maintaining loose coupling and testability where it adds genuine value while avoiding the complexity trap of over-abstraction, unnecessary indirection, and the ["noun bias" problem](https://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html) where simple actions become wrapped in artificial object hierarchies.
 
 # Mixed Paradigm (OOP ⋃ FP)
 

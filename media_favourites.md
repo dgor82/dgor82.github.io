@@ -56,6 +56,7 @@ These are the blogs I follow (or in whose archives I like to snoop around)
 These articles left a lasting impression. Sorted by when I read/encountered them.
 
 ### 2025
+* [Execution in the Kingdom of Nouns](https://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html)
 * [The Software Engineering Identity Crisis](https://annievella.com/posts/the-software-engineering-identity-crisis/?utm_source=tldrnewsletter)
 * [On the foolishness of "natural language programming" (Dijkstra, 1978)](https://www.cs.utexas.edu/~EWD/ewd06xx/EWD667.PDF)
 
