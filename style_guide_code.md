@@ -108,7 +108,9 @@ A more useful framework is John Ousterhout's 'depth' which represents the ratio 
 
 I apply Dependency Injection selectively rather than universally, distinguishing between the DI principle (constructor injection with explicit dependencies) and DI frameworks (like Microsoft.Extensions.DependencyInjection). Before deciding how to handle any potential dependency, I apply a necessity test: Can this be a pure function? If yes, I make it a static method, extension method, or local function rather than a class. 
 
-If it needs to be a class, is it an implementation detail (value objects, simple business entities, local utilities, short-lived objects) or an architectural dependency? Implementation details can be created with new as they're stable collaborators that are genuinely part of the consuming class's natural object model.
+If it needs to be a class, is it an implementation detail (value objects, simple business entities, local utilities, short-lived objects) or an architectural dependency? 
+
+Implementation details can be directly instantiated with `new()` as they're stable collaborators that are genuinely part of the consuming class's natural object model. 
 
 I use constructor injection for architectural dependencies: 
 - external systems (databases, APIs, file systems), 
@@ -117,7 +119,9 @@ I use constructor injection for architectural dependencies:
 - components where I need multiple implementations, or 
 - cases requiring mocking for testing. 
 
-I create interfaces only when I actually have polymorphic behaviour or need to mock for testing—not solely to enable injection. The goal is maintaining loose coupling and testability where it adds genuine value while avoiding the complexity trap of over-abstraction, unnecessary indirection, and the ["noun bias" problem](https://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html) where simple actions become wrapped in artificial object hierarchies.
+Interfaces are justified only when I actually have polymorphic behaviour or need to mock for testing —  not solely to enable injection! With no interface, register and inject the concrete type.
+
+Overall, my goal with this approach is maintaining loose coupling and testability where it adds genuine value while avoiding the complexity trap of over-abstraction, unnecessary indirection, and the ["noun bias" problem](https://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html) where simple actions become wrapped in artificial object hierarchies.
 
 # Mixed Paradigm (OOP ⋃ FP)
 
