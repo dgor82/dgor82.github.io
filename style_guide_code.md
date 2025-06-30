@@ -1,4 +1,4 @@
-Last Update: 21/06/2025
+Last Update: 30/06/2025
 
 # Coding Style
 
@@ -18,6 +18,7 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
   - [Explicitness over Conciseness](#explicitness-over-conciseness)
   - [Depth vs Shortness of Functions](#depth-vs-shortness-of-functions)
   - [Dependency Injection](#dependency-injection)
+    - [DI Container Libraries](#di-container-libraries)
 - [Mixed Paradigm (OOP ⋃ FP)](#mixed-paradigm-oop--fp)
   - [Extending C# with Monads](#extending-c-with-monads)
     - [1) Instead of nullable reference types: `Option<T>`](#1-instead-of-nullable-reference-types-optiont)
@@ -106,7 +107,7 @@ A more useful framework is John Ousterhout's 'depth' which represents the ratio 
 
 ## Dependency Injection
 
-I apply Dependency Injection selectively rather than universally, distinguishing between the DI principle (constructor injection with explicit dependencies) and DI frameworks (like Microsoft.Extensions.DependencyInjection). Before deciding how to handle any potential dependency, I apply a necessity test: Can this be a pure function? If yes, I make it a static method, extension method, or local function rather than a class. 
+I apply Dependency Injection selectively rather than universally. Before deciding how to handle any potential dependency, I apply a necessity test: Can this be a pure function? If yes, I make it a static method, extension method, or local function rather than a class. 
 
 If it needs to be a class, is it an implementation detail (value objects, simple business entities, local utilities, short-lived objects) or an architectural dependency? 
 
@@ -119,9 +120,13 @@ I use constructor injection for architectural dependencies:
 - components where I need multiple implementations, or 
 - cases requiring mocking for testing. 
 
-Interfaces are justified only when I actually have polymorphic behaviour or need to mock for testing —  not solely to enable injection! With no interface, register and inject the concrete type.
+Interfaces are justified only when I actually have polymorphic behaviour or need to mock for testing or wrap in Decorators, Virtual Proxies (etc.) — but never solely to enable injection! With no interface, I simply register and inject the concrete type.
 
 Overall, my goal with this approach is maintaining loose coupling and testability where it adds genuine value while avoiding the complexity trap of over-abstraction, unnecessary indirection, and the ["noun bias" problem](https://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html) where simple actions become wrapped in artificial object hierarchies.
+
+### DI Container Libraries
+
+The above discussion relates to the *technique* of DI, not to the use of the *technology* of DI Container Libraries. For the latter, I stick to basic usage of `Microsoft.Extensions.DependencyInjection` (e.g. no advanced / custom Lifestyles or other features where regular business logic can do the job, e.g. for cache expiration). The main motivation for the use of a DI Container is avoiding repetitive, manual object graph compositions which represent a repetition of the information already contained in constructors. In large projects, apply `Convention over Configuration` pattern and use `Scrutor` to extend MS.DI with auto-registration capability. 
 
 # Mixed Paradigm (OOP ⋃ FP)
 
