@@ -129,7 +129,7 @@ Overall, my goal with this approach is maintaining loose coupling and testabilit
 
 The above discussion relates only to the *technique* of DI, not to the *technology* facilitating it (i.e. DI Container Libraries). Here, my library of choice is `Autofac` (see [Why Autofac](https://mattburke.dev/why-autofac/)). I avoid 'sophisticated use', where regular business logic can do the job. 
 
-The main motivation for the use of a DI Container is avoiding repetitive, manual object graph compositions which represent a repetition of the information already contained in constructors. In large projects, I rely on auto-registration based, enabled by the `Convention over Configuration` pattern. 
+The main motivation for the use of a DI Container is avoiding manual object graph compositions which represent a repetition of the information already contained in constructors. In large projects, I rely on auto-registration enabled by the `Convention over Configuration` pattern. 
 
 ## Aspect-Oriented Programming (AOP)
 
