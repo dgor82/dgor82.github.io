@@ -19,6 +19,7 @@ For long-lived .NET projects, I generally follow the set of approaches and parad
   - [Depth vs Shortness of Functions](#depth-vs-shortness-of-functions)
   - [Dependency Injection](#dependency-injection)
     - [DI Container Libraries](#di-container-libraries)
+  - [Aspect-Oriented Programming (AOP)](#aspect-oriented-programming-aop)
 - [Mixed Paradigm (OOP ⋃ FP)](#mixed-paradigm-oop--fp)
   - [Extending C# with Monads](#extending-c-with-monads)
     - [1) Instead of nullable reference types: `Option<T>`](#1-instead-of-nullable-reference-types-optiont)
@@ -120,13 +121,21 @@ I use constructor injection for architectural dependencies:
 - components where I need multiple implementations, or 
 - cases requiring mocking for testing. 
 
-Interfaces are justified only when I actually have polymorphic behaviour or need to mock for testing or wrap in Decorators, Virtual Proxies (etc.) — but never solely to enable injection! With no interface, I simply register and inject the concrete type.
+Interfaces are justified only when I actually have polymorphic behaviour or need to mock for testing or wrap implementations in Decorators, Virtual Proxies (etc.) — but never solely to enable injection! Thus, when there is no interface, I simply register the concrete type `.AsSelf()`.
 
 Overall, my goal with this approach is maintaining loose coupling and testability where it adds genuine value while avoiding the complexity trap of over-abstraction, unnecessary indirection, and the ["noun bias" problem](https://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html) where simple actions become wrapped in artificial object hierarchies.
 
 ### DI Container Libraries
 
-The above discussion relates to the *technique* of DI, not to the use of the *technology* of DI Container Libraries. For the latter, I stick to basic usage of `Microsoft.Extensions.DependencyInjection` (e.g. no advanced / custom Lifestyles or other features where regular business logic can do the job, e.g. for cache expiration). The main motivation for the use of a DI Container is avoiding repetitive, manual object graph compositions which represent a repetition of the information already contained in constructors. In large projects, apply `Convention over Configuration` pattern and use `Scrutor` to extend MS.DI with auto-registration capability. 
+The above discussion relates only to the *technique* of DI, not to the *technology* facilitating it (i.e. DI Container Libraries). Here, my library of choice is `Autofac` (see [Why Autofac](https://mattburke.dev/why-autofac/)). I avoid 'sophisticated use', where regular business logic can do the job. 
+
+The main motivation for the use of a DI Container is avoiding repetitive, manual object graph compositions which represent a repetition of the information already contained in constructors. In large projects, I rely on auto-registration based, enabled by the `Convention over Configuration` pattern. 
+
+## Aspect-Oriented Programming (AOP)
+
+Sounds great in theory, but is prone to over-engineering in practice. For most typical cross-cutting concerns (like *logging*, *error handling*, *validation*, *security*...), I find it easier to stick to very specific and local/targeted implementations. *Auditing* usually come 'for free' when using Event Sourcing for persistence, which is my default. 
+
+Caching (e.g. for Repositories) has been one of the few examples, where AOP came in handy. I restrict myself to AOP by Design, i.e. no dynamic interception or compile-time weaving, which are mostly useful for legacy projects. 
 
 # Mixed Paradigm (OOP ⋃ FP)
 
