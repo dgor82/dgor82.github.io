@@ -133,7 +133,7 @@ The main motivation for the use of a DI Container is avoiding manual object grap
 
 ## Aspect-Oriented Programming (AOP)
 
-Sounds great in theory, but is prone to over-engineering in practice. For most typical cross-cutting concerns (like *logging*, *error handling*, *validation*, *security*...), I find it easier to stick to very specific and local/targeted implementations. *Auditing* usually come 'for free' when using Event Sourcing for persistence, which is my default. 
+Sounds great in theory, but is prone to over-engineering in practice. For most typical cross-cutting concerns (like *logging*, *error handling*, *validation*, *security*...), I find it easier to stick to very specific and local/targeted implementations. *Auditing* usually comes 'for free' when using Event Sourcing for persistence, which is my default. 
 
 Caching (e.g. for Repositories) has been one of the few examples, where AOP came in handy. I restrict myself to AOP by Design, i.e. no dynamic interception or compile-time weaving, which are mostly useful for legacy projects. 
 
