@@ -126,3 +126,4 @@ These articles left a lasting impression. Sorted by when I read/encountered them
 * [10 Programmer Stereotypes](https://www.youtube.com/watch?v=_k-F-MMvQV4)
 * [Wat](https://www.destroyallsoftware.com/talks/wat)
 * [The International Obfuscated C Code Contest](https://www.ioccc.org)
+* [Deus Ex Machina or The True Computerist](http://www.ittybittycomputers.com/Essays/DeusExMac.htm)
