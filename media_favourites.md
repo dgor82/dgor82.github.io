@@ -1,4 +1,4 @@
-Last Update: 08/08/2025
+Last Update: 23/11/2025
 
 # Media Favourites
 
@@ -56,6 +56,7 @@ These are the blogs I follow (or in whose archives I like to snoop around)
 These articles left a lasting impression. Sorted by when I read/encountered them.
 
 ### 2025
+* [Science as a Craft Industry](https://www.science.org/doi/10.1126/science.280.5366.1014)
 * [Choose Boring Technology](https://mcfunley.com/choose-boring-technology)
 * [Execution in the Kingdom of Nouns](https://steve-yegge.blogspot.com/2006/03/execution-in-kingdom-of-nouns.html)
 * [The Software Engineering Identity Crisis](https://annievella.com/posts/the-software-engineering-identity-crisis/?utm_source=tldrnewsletter)
