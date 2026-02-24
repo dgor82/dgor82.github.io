@@ -1,4 +1,4 @@
-Last Update: 31/01/2026
+Last Update: 24/02/2026
 
 # Media Favourites
 
@@ -13,6 +13,7 @@ Here you can find a curated list of publications I follow as well as some all-ti
     - [Historic \& Curiosities](#historic--curiosities)
     - [.NET Specific](#net-specific)
 - [Articles](#articles)
+    - [2026](#2026)
     - [2025](#2025)
     - [2024](#2024)
     - [2023](#2023)
@@ -54,6 +55,9 @@ These are the blogs I follow (or in whose archives I like to snoop around)
 
 # Articles
 These articles left a lasting impression. Sorted by when I read/encountered them.
+
+### 2026
+* [Steven Sinofsky: Death of Software. Nah.](https://hardcoresoftware.learningbyshipping.com/p/238-death-of-software-nah)
 
 ### 2025
 * [Kent Beck: Augmented Coding and Design](https://tidyfirst.substack.com/p/augmented-coding-and-design)
