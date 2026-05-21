@@ -57,6 +57,7 @@ These are the blogs I follow (or in whose archives I like to snoop around)
 These articles left a lasting impression. Sorted by when I read/encountered them.
 
 ### 2026
+* [Jacob Harris: Why I don't Vibe Code](https://jacobharr.is/personal/i-dont-vibe-code)
 * [Steven Sinofsky: Death of Software. Nah.](https://hardcoresoftware.learningbyshipping.com/p/238-death-of-software-nah)
 
 ### 2025
